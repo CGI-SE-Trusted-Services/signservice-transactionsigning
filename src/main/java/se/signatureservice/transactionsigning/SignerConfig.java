@@ -1,6 +1,6 @@
 /************************************************************************
  *                                                                       *
- *  Certificate Service - Remote Sign                                    *
+ *  Signservice Transaction Signing                                      *
  *                                                                       *
  *  This software is free software; you can redistribute it and/or       *
  *  modify it under the terms of the GNU Affero General Public License   *
@@ -31,9 +31,6 @@ public class SignerConfig {
     public final static String DEFAULT_PADES_SIGNATUREPACKING = "ENVELOPED";
     public final static String DEFAULT_CADES_SIGNATURELEVEL = "CAdES-BASELINE-B";
     public final static String DEFAULT_CADES_SIGNATUREPACKING = "ENVELOPING";
-
-    public SignerConfig(){
-    }
 
     /**
      * API endpoint to use when requesting signature.

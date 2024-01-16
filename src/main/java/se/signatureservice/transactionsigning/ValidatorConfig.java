@@ -1,6 +1,6 @@
 /************************************************************************
  *                                                                       *
- *  Certificate Service - Remote Sign                                    *
+ *  Signservice Transaction Signing                                      *
  *                                                                       *
  *  This software is free software; you can redistribute it and/or       *
  *  modify it under the terms of the GNU Affero General Public License   *
@@ -24,9 +24,6 @@ public class ValidatorConfig {
     public final static String DEFAULT_VALIDATION_TRUSTSTORE_TYPE = "JKS";
     public final static boolean DEFAULT_VALIDATION_STRICT = false;
     public final static boolean DEFAULT_VALIDATION_DISABLE_REVOCATIONCHECK = false;
-
-    public ValidatorConfig(){
-    }
 
     /**
      * Truststore containing trusted issuers to use when
