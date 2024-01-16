@@ -1,0 +1,182 @@
+= Transaction Signing Library
+
+Library to perform transaction signatures.
+
+== Introduction
+
+This is library to perform signing and validation of transactions consisting of
+one or more documents. Documents are signed according to the ETSI specifications
+for advanced electronic signatures:
+
+* XAdES (ETSI TS 101 903)
+* PAdES (ETSI TS 102 778)
+* CAdES (ETSI TS 103 173)
+
+=== Requirements
+To successfully use the library the following is needed:
+
+* Transaction Signing Library available on the class path
+* Access to a remote signature service
+    - API Endpoint URL
+    - Authentication parameters
+* Required remote signature service parameters
+    - keyID
+    - signType
+
+== Examples
+A full working example is available in `BasicExample.java`. This section goes
+through the essential parts of basic usage.
+
+=== Create Transaction Signer
+The following example shows how to create a new instance of a transaction signer
+that can be used to sign documents. In this example authentication is performed
+using an API key.
+
+NOTE: For more information about how the transaction signer can be configured
+please read the Javadoc for `TransactionSigner.Builder`.
+
+    TransactionSigner signer = new TransactionSigner.Builder()
+            .apiEndpoint("http://192.168.99.21:8080/lcso/signRequest/rest/v1")
+            .apiKey("iqxMo5Im4ya2EZsPravicPxj")
+            .signType("rsa2048_sha256")
+            .keyId("testkey")
+            .build();
+
+It is also possible to perform authentication using client certificate. The following
+example shows how to create transaction signer that is using client certificate and
+private key from an existing `java.security.KeyStore`, along with a custom truststore
+that will be used when verifying server certificates during TLS handshake.
+
+NOTE: `loadExternalKeyStore` and `loadExternalTrustStore` in this example needs to be
+implemented by the reader. Truststore is optional when building the transaction signer
+and if not specified the default JRE truststore will be used, containing publicly trusted
+certificate authorities.
+
+    KeyStore keyStore = loadExternalKeyStore();
+    KeyStore trustStore = loadExternalTrustStore();
+    TransactionSigner signer = new TransactionSigner.Builder()
+            .apiEndpoint("http://localhost:8080/lcso/signRequest/rest/v1")
+            .sslKeyStore(keyStore, "123456")
+            .sslTrustStore(trustStore)
+            .signType("rsa2048_sha256")
+            .keyId("testkey")
+            .build();
+
+It is also possible to specify keystore and/or truststore using a path that is available on the local file system.
+
+    TransactionSigner signer = new TransactionSigner.Builder()
+        .apiEndpoint("http://192.168.99.21:8080/lcso/signRequest/rest/v1")
+        .sslKeyStore("/path/to/keystore.jks", "123456", "JKS")
+        .sslTrustStore("/path/to/truststore.jks", "changeit", "JKS")
+        .signType("rsa2048_sha256")
+        .keyId("testKey")
+        .build();
+
+=== Sign Document
+Document can then be signed as shown in the following example.
+
+    Document document = new Document("/some/file.xml");
+    SignedDocument signedDocument = signer.signDocument(document);
+
+=== Create Transaction Validator
+The following example shows how to create an instance of a transaction validator
+that can be used to validate a previously signed document.
+
+NOTE: For more information about how the transaction validator can be configured
+please read the Javadoc for `TransactionValidator.Builder`.
+
+    TransactionValidator validator = new TransactionValidator.Builder()
+        .trustStore("/path/to/truststore.jks", "changeit", "JKS")
+        .build();
+
+It is also possible to specify truststore using an existing instance of a `java.security.KeyStore` which might be needed
+if the keystore is loaded from an external data store (e.g. key vault service) and not available on the local file system.
+
+NOTE: `loadExternalTrustStore` in this example needs to be implemented by the reader.
+
+    KeyStore trustStore = loadExternalTrustStore();
+    TransactionValidator validator = new TransactionValidator.Builder()
+        .trustStore(trustStore)
+        .build();
+
+=== Validate Document
+A signed document can then be validated as shown in the following example.
+
+    try {
+        validator.validateDocument(signedDocument);
+        // Signature validation successful.
+    } catch(ValidationException e){
+        // Signature validation failed.
+    }
+
+=== Using a Customized TransformerFactoryBuilder
+In some scenarios the library might be used in Java environments that does not support
+the default XML processor features and/or attributes, indicated by the following error.
+
+    Failed to process sign response: SECURITY : unable to set attribute(s) [Attribute 'http://javax.xml.XMLConstants/property/accessExternalDTD' = ''. Cause : Not supported: http://javax.xml.XMLConstants/property/accessExternalDTD, Attribute 'http://javax.xml.XMLConstants/property/accessExternalStylesheet' = ''. Cause : Not supported: http://javax.xml.XMLConstants/property/accessExternalStylesheet]
+
+This can be solved by removing unsupported attributes and/or disabling unsupported features by
+using a customized TransformerFactoryBuilder. The example error above can be resolved with the
+following piece of code.
+```
+    // Necessary imports
+    import eu.europa.esig.dss.jaxb.TransformerFactoryBuilder;
+    import eu.europa.esig.dss.jaxb.XmlDefinerUtils;
+
+    // Create custom TransformerFactoryBuilder without unsupported attributes
+    TransformerFactoryBuilder secureTransformerFactoryBuilder = TransformerFactoryBuilder.getSecureTransformerBuilder();
+    secureTransformerFactoryBuilder.removeAttribute("http://javax.xml.XMLConstants/property/accessExternalDTD");
+    secureTransformerFactoryBuilder.removeAttribute("http://javax.xml.XMLConstants/property/accessExternalStylesheet");
+    // Instruct DSS library to use it
+    XmlDefinerUtils.getInstance().setTransformerFactoryBuilder(secureTransformerFactoryBuilder);
+```
+This should be executed during application startup before any document is signed or validated.
+
+== CLI Tool
+A Simple commandline tool exist to test functionality of the library.
+The tool is available in the class `se.signatureservice.transactionsigning.cli.SignTool`.
+
+NOTE: To enable logging a SLF4J binding must be placed on the classpath (ex. `slf4j-simple-x.y.z.jar`).
+
+=== Signing example with API-key
+
+    export TS_APIENDPOINT="https://sign.somecompany.com/lcso/signRequest/rest/v1"
+    export TS_SIGNTYPE="rsaSign_ades"
+    export TS_KEYID="testKey"
+    export TS_APIKEY="iqxMo5Im4ya2EZsPravicPxj"
+    java -cp certservice-transactionsigning-1905.1.jar \
+     se.signatureservice.transactionsigning.cli.SignTool \
+     sign /some/path/testdocument.xml /tmp/signeddoc.xml
+
+=== Signing example with client certificate
+
+    export TS_APIENDPOINT="https://sign.somecompany.com/lcso/signRequest/rest/v1"
+    export TS_SIGNTYPE="rsaSign_ades"
+    export TS_KEYID="testKey"
+    export TS_KEYSTORE="/some/path/keystore.jks"
+    export TS_KEYSTORE_PASSWORD="somepassword"
+    java -cp certservice-transactionsigning-1905.1.jar \
+     se.signatureservice.transactionsigning.cli.SignTool \
+     sign /some/path/testdocument.xml /tmp/signeddoc.xml
+
+=== Signing example with client certificate and custom SSL truststore
+
+    export TS_APIENDPOINT="https://sign.somecompany.com/lcso/signRequest/rest/v1"
+    export TS_SIGNTYPE="rsaSign_ades"
+    export TS_KEYID="testKey"
+    export TS_KEYSTORE="/some/path/keystore.jks"
+    export TS_KEYSTORE_PASSWORD="somepassword"
+    export TS_TRUSTSTORE="/tmp/ssl-truststore.jks"
+    export TS_TRUSTSTORE_PASSWORD="foo123"
+    java -cp certservice-transactionsigning-1905.1.jar \
+     se.signatureservice.transactionsigning.cli.SignTool \
+     sign /some/path/testdocument.xml /tmp/signeddoc.xml
+
+=== Verify Example
+
+    export TS_TRUSTSTORE="/tmp/truststore.jks"
+    export TS_TRUSTSTORE_PASSWORD="foo123"
+    java -cp certservice-transactionsigning-1905.1.jar \
+     se.signatureservice.transactionsigning.cli.SignTool \
+     verify /tmp/signeddoc.xml
+

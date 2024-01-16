@@ -1,0 +1,55 @@
+group "se.signatureservice.support"
+
+apply plugin: "java"
+apply plugin: "groovy"
+apply plugin: "java-library"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "eu.europa.ec.joinup.sd-dss:dss-xades:$dssVersion"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-cades:$dssVersion"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-pades:$dssVersion"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-service:$dssVersion"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-utils:$dssVersion"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-utils-apache-commons:$dssVersion"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-crl-parser-x509crl:$dssVersion"
+    implementation "org.slf4j:slf4j-api:1.7.36"
+    implementation "org.slf4j:slf4j-simple:1.7.36"
+    implementation "org.json:json:20190722"
+    testImplementation "org.spockframework:spock-core:2.1-groovy-3.0"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+shadowJar {
+    baseName = 'signservice-transactionsigning'
+    mergeServiceFiles()
+    classifier = ''
+    dependencies {
+        exclude(dependency("org.slf4j:slf4j-simple:1.7.29"))
+    }
+    relocate 'org.apache', 'signservice.org.apache'
+    relocate 'org.json', 'signservice.org.json'
+    relocate 'com.ctc', 'signservice.com.ctc'
+    relocate 'org.bouncycastle', 'signservice.org.bouncycastle'
+    relocate 'org.codehaus', 'signservice.org.codehaus'
+}
+
+tasks.build.dependsOn tasks.shadowJar
+tasks.zipBin.dependsOn tasks.shadowJar

@@ -1,0 +1,20 @@
+task zipBin(type: Zip) {
+    String projectBaseName = project.name + "-${project.ext.get('shortVersionNumber')}"
+    archiveFileName = projectBaseName + '-bin.zip'
+
+    from(projectDir) {
+        include('README.adoc')
+        include('CHANGELOG.adoc')
+        include('THIRD-PARTY-NOTICES')
+        include('LICENSE')
+        into(projectBaseName)
+    }
+    from('build/libs/') {
+        fileMode = 0755
+        include(projectBaseName + ".jar")
+        into(projectBaseName)
+    }
+    from('build/docs/html5') {
+        into(projectBaseName + "/docs")
+    }
+}
