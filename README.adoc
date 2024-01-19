@@ -180,3 +180,32 @@ NOTE: To enable logging a SLF4J binding must be placed on the classpath (ex. `sl
      se.signatureservice.transactionsigning.cli.SignTool \
      verify /tmp/signeddoc.xml
 
+== Migration from old version
+This section describes how to migrate from old version of the library (<= 2211.1)
+to a newer version of the library.
+
+=== New library name
+The new version of the library is called _Signature Service Transaction Signing Library_.
+This means that the release artifact names has changed.
+
+|===
+|Old artifact name | New artifact package
+
+| certservice-transactionsigning-*<version>*.zip
+| signservice-transactionsigning-*<version>*.zip
+
+| certservice-transactionsigning-*<version>*.jar
+| signservice-transactionsigning-*<version>*.jar
+|===
+
+
+=== New Java package names
+In the new version of the library the package names have changed and all import
+statements when using the library needs to be updated.
+
+|===
+|Old version package | New Version package
+
+| org.certificateservices.transactionsigning.*
+| se.signatureservice.transactionsigning.*
+|===

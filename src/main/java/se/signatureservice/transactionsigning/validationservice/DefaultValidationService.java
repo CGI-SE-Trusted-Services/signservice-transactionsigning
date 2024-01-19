@@ -37,12 +37,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Standard implementation of service to validate documents
+ *
+ * @author Tobias Agerberg
+ */
 public class DefaultValidationService implements ValidationService {
     private static final Logger log = LoggerFactory.getLogger(DefaultValidationService.class);
 
     private ValidatorConfig config;
     private boolean initialized;
-
     private CertificateVerifier certificateVerifier;
 
     /**
