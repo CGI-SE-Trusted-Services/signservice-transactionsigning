@@ -52,11 +52,11 @@ buildscript {
 
 apply plugin: 'com.github.johnrengelman.shadow'
 shadowJar {
-    baseName = 'signservice-transactionsigning'
+    archiveBaseName = 'signservice-transactionsigning'
     mergeServiceFiles()
-    classifier = ''
+    archiveClassifier = ''
     dependencies {
-        exclude(dependency("org.slf4j:slf4j-simple:1.7.29"))
+        exclude(dependency("org.slf4j:slf4j-simple:1.7.36"))
     }
     relocate 'org.apache', 'signservice.org.apache'
     relocate 'org.json', 'signservice.org.json'
@@ -66,4 +66,6 @@ shadowJar {
 }
 
 tasks.build.dependsOn tasks.shadowJar
-tasks.zipBin.dependsOn tasks.shadowJar
+if(tasks.findByName("zipBin") && tasks.findByName("shadowJar")) {
+    tasks.zipBin.dependsOn tasks.shadowJar
+}

@@ -1,10 +1,9 @@
-task zipBin(type: Zip) {
+tasks.register('zipBin', Zip) {
     String projectBaseName = project.name + "-${project.ext.get('shortVersionNumber')}"
     archiveFileName = projectBaseName + '-bin.zip'
 
     from(projectDir) {
         include('README.adoc')
-        include('CHANGELOG.adoc')
         include('THIRD-PARTY-NOTICES')
         include('LICENSE')
         into(projectBaseName)
