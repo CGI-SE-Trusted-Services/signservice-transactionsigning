@@ -139,14 +139,21 @@ public class DefaultSupportService implements SupportService {
     @Override
     public List<SignedDocument> processSignResponse(String response) throws SignatureException {
         List<SignedDocument> signedDocuments = new ArrayList<>();
+        JSONObject signResponse;
+        String requestId;
 
         if(!initialized){
             throw new SignatureException("SupportService must be initialized before calling generateSignRequest");
         }
 
         try {
-            JSONObject signResponse = new JSONObject(response);
-            String requestId = signResponse.getString("requestId");
+            signResponse = new JSONObject(response);
+            requestId = signResponse.getString("requestId");
+        } catch(Exception e){
+            throw new SignatureException("Failed to parse sign response: " + (e.getCause() != null ? e.getCause().getMessage() : e.getMessage()), e);
+        }
+
+        try {
             if(!pendingSignatures.containsKey(requestId)){
                 throw new SignatureException("No pending transaction found with requestId: " + requestId);
             }
@@ -218,9 +225,11 @@ public class DefaultSupportService implements SupportService {
                 signedDocument.setContent(CommonUtils.getBytesFromInputStream(dssSignedDocument.openStream()));
                 signedDocuments.add(signedDocument);
             }
-
         } catch(Exception e){
             throw new SignatureException("Failed to process sign response: " + (e.getCause() != null ? e.getCause().getMessage() : e.getMessage()), e);
+        } finally {
+            // Clear pending signature data when request has processed.
+            pendingSignatures.remove(requestId);
         }
         return signedDocuments;
     }
