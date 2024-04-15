@@ -219,6 +219,8 @@ public class DefaultSupportService implements SupportService {
                 signedDocuments.add(signedDocument);
             }
 
+            // Clear pending signature data when request has processed.
+            pendingSignatures.remove(requestId);
         } catch(Exception e){
             throw new SignatureException("Failed to process sign response: " + (e.getCause() != null ? e.getCause().getMessage() : e.getMessage()), e);
         }
