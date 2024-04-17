@@ -4,6 +4,7 @@ tasks.register('zipBin', Zip) {
 
     from(projectDir) {
         include('README.adoc')
+        include('CHANGELOG.adoc')
         include('THIRD-PARTY-NOTICES')
         include('LICENSE')
         into(projectBaseName)
