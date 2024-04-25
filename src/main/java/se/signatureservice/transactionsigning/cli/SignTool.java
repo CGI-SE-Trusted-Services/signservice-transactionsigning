@@ -210,6 +210,7 @@ public class SignTool {
                 System.out.println("Document signed successfully!");
 
                 String parentPath = new File(pathName).getParent();
+                assert signedDocument != null;
                 String outputPath = (parentPath != null ? (parentPath + "/") : "") + "signed_" + signedDocument.getName();
                 if(args.length > 2){
                     outputPath = args[2];

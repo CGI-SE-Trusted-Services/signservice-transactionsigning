@@ -77,10 +77,10 @@ final public class TransactionSigner {
     public List<SignedDocument> signDocuments(List<Document> documents) throws SignatureException, SignatureIOException, InvalidParameterException {
         try {
             String request = supportService.generateSignRequest(documents);
-            log.info("Generated request: " + request);
+            log.info("Generated request: {}", request);
 
             String response = signService.requestSignature(request);
-            log.info("Got signature response: " + response);
+            log.info("Got signature response: {}", response);
 
             return supportService.processSignResponse(response);
         } catch(Exception e){
@@ -180,7 +180,7 @@ final public class TransactionSigner {
                 config.setSslKeyStore(keyStore);
                 config.setSslKeyStorePassword(keyStorePassword);
             } catch(Exception e){
-                log.error("Failed to load keystore from " + keyStorePath + ": " + e.getMessage());
+                log.error("Failed to load keystore from {}: {}", keyStorePath, e.getMessage());
             }
             return this;
         }
@@ -215,7 +215,7 @@ final public class TransactionSigner {
                 trustStore.load(new FileInputStream(trustStorePath), trustStorePassword.toCharArray());
                 config.setSslTrustStore(trustStore);
             } catch(Exception e){
-                log.error("Failed to load truststore from " + trustStorePath + ": " + e.getMessage());
+                log.error("Failed to load truststore from {}: {}", trustStorePath, e.getMessage());
             }
             return this;
         }

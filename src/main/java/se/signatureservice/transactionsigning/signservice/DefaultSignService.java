@@ -122,7 +122,7 @@ public class DefaultSignService implements SignService {
             try {
                 response = new JSONObject(buffer.toString()).toString();
             } catch(Exception e){
-                log.error("Invalid response received from server: " + buffer);
+                log.error("Invalid response received from server: {}", buffer);
             }
             connection.disconnect();
 
@@ -165,7 +165,7 @@ public class DefaultSignService implements SignService {
 
             context.init(keyManagers, trustManagers, null);
         } catch(Exception e){
-            log.error("Failed to create SSL context: " + e.getMessage(), e);
+            log.error("Failed to create SSL context: {}", e.getMessage(), e);
         }
 
         return context;
@@ -189,10 +189,10 @@ public class DefaultSignService implements SignService {
         InputStream keyStoreResource = this.getClass().getClassLoader().getResourceAsStream(path);
 
         if(keyStoreResource != null){
-            log.debug("Loading from classpath: " + path);
+            log.debug("Loading from classpath: {}", path);
             keyStore.load(keyStoreResource, password.toCharArray());
-        } else if(keyStoreFile != null && keyStoreFile.exists()){
-            log.debug("Loading from file system: " + path);
+        } else if(keyStoreFile.exists()){
+            log.debug("Loading from file system: {}", path);
             keyStore.load(new FileInputStream(keyStoreFile), password.toCharArray());
         } else {
             throw new InvalidParameterException("Cannot read keystore (" + path + ") from classpath or filesystem.");

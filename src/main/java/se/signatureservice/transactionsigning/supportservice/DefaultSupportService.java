@@ -39,6 +39,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.bouncycastle.util.encoders.Base64;
+
+import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.util.*;
 
@@ -174,11 +176,11 @@ public class DefaultSupportService implements SupportService {
                 JSONArray signingCertificates = signResponseTasks.getJSONObject(i).getJSONArray("signingCertificates");
                 for(int j=0;j<signingCertificates.length();j++){
                     String base64cert = signingCertificates.getString(j);
-                    x509SigningCertificates.add(CommonUtils.getCertfromByteArray(Base64.decode(base64cert.getBytes("UTF-8"))));
+                    x509SigningCertificates.add(CommonUtils.getCertfromByteArray(Base64.decode(base64cert.getBytes(StandardCharsets.UTF_8))));
                 }
 
                 if(signingCertificates.isEmpty()){
-                    log.error("Signature response (requestId=" + requestId + ") did not contain any signature certificates (signTaskId=" + signTaskId + ").");
+                    log.error("Signature response (requestId={}) did not contain any signature certificates (signTaskId={}).", requestId, signTaskId);
                     continue;
                 }
 
@@ -222,6 +224,7 @@ public class DefaultSupportService implements SupportService {
                 SignedDocument signedDocument = new SignedDocument();
                 signedDocument.setName(document.getName());
                 signedDocument.setMimeType(document.getMimeType());
+                assert dssSignedDocument != null;
                 signedDocument.setContent(CommonUtils.getBytesFromInputStream(dssSignedDocument.openStream()));
                 signedDocuments.add(signedDocument);
             }
@@ -257,7 +260,7 @@ public class DefaultSupportService implements SupportService {
             dataToBeSigned = cAdESService.getDataToSign(dssDocument, cAdESSignatureParameters).getBytes();
         }
 
-        log.debug("Generated dataToBeSigned = " + (dataToBeSigned != null ? Base64.toBase64String(dataToBeSigned) : null));
+        log.debug("Generated dataToBeSigned = {}", dataToBeSigned != null ? Base64.toBase64String(dataToBeSigned) : null);
         return dataToBeSigned != null ? Base64.toBase64String(dataToBeSigned) : null;
     }
 

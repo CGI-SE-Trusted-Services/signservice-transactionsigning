@@ -50,14 +50,15 @@ public class CommonUtils {
      * @throws IOException If error occurred while reading from the stream.
      */
     public static byte[] getBytesFromInputStream(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        int count;
-        byte[] data = new byte[16384];
+        try (ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+            int count;
+            byte[] data = new byte[16384];
 
-        while ((count = inputStream.read(data, 0, data.length)) != -1) {
-            buffer.write(data, 0, count);
+            while ((count = inputStream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, count);
+            }
+
+            return buffer.toByteArray();
         }
-
-        return buffer != null ? buffer.toByteArray() : null;
     }
 }

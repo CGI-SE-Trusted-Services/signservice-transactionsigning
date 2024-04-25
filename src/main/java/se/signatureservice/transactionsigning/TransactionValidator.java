@@ -112,7 +112,7 @@ final public class TransactionValidator {
                 trustStore.load(new FileInputStream(trustStorePath), trustStorePassword.toCharArray());
                 config.setTrustStore(trustStore);
             } catch(Exception e){
-                log.error("Failed to load truststore from " + trustStorePath + ": " + e.getMessage());
+                log.error("Failed to load truststore from {}: {}", trustStorePath, e.getMessage());
             }
             return this;
         }

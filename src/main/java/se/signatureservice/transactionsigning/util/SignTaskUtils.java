@@ -57,8 +57,7 @@ public class SignTaskUtils {
         if(encodedAttributeValue != null){
             try {
                 attributeValue = Base64.decode(encodedAttributeValue);
-            } catch(DecoderException e){
-                attributeValue = null;
+            } catch(DecoderException ignored){
             }
         }
         return attributeValue;
