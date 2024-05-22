@@ -23,17 +23,17 @@ repositories {
 }
 
 dependencies {
-    implementation "eu.europa.ec.joinup.sd-dss:dss-xades:5.13"
-    implementation "eu.europa.ec.joinup.sd-dss:dss-cades:5.13"
-    implementation "eu.europa.ec.joinup.sd-dss:dss-pades:5.13"
-    implementation "eu.europa.ec.joinup.sd-dss:dss-service:5.13"
-    implementation "eu.europa.ec.joinup.sd-dss:dss-utils:5.13"
-    implementation "eu.europa.ec.joinup.sd-dss:dss-utils-apache-commons:5.13"
-    implementation "eu.europa.ec.joinup.sd-dss:dss-crl-parser-x509crl:5.13"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-xades:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-cades:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-pades:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-service:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-utils:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-utils-apache-commons:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-crl-parser-x509crl:${dssVersion}"
     implementation "org.slf4j:slf4j-api:1.7.36"
     implementation "org.slf4j:slf4j-simple:1.7.36"
-    implementation "org.json:json:20240205"
-    testImplementation "org.spockframework:spock-core:2.1-groovy-3.0"
+    implementation "org.json:json:20240303"
+    testImplementation "org.spockframework:spock-core"
 }
 
 test {
