@@ -3,7 +3,11 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
-== Version 2404.1
+== Version 2405.1
 
 === Improvements and bug fixes
-* TODO
+* Added missing gradlew and gradlew.bat files.
+* Fixed bug that caused memory issues in transaction signature library after heavy usage.
+
+=== Upgrade notes
+This release contains no breaking changes.
