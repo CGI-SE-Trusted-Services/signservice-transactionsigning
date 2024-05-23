@@ -221,12 +221,15 @@ public class DefaultSupportService implements SupportService {
                     dssSignedDocument = cAdESService.signDocument(dssDocument, cAdESSignatureParameters, signatureValue);
                 }
 
-                SignedDocument signedDocument = new SignedDocument();
-                signedDocument.setName(document.getName());
-                signedDocument.setMimeType(document.getMimeType());
-                assert dssSignedDocument != null;
-                signedDocument.setContent(CommonUtils.getBytesFromInputStream(dssSignedDocument.openStream()));
-                signedDocuments.add(signedDocument);
+                if(dssSignedDocument != null) {
+                    SignedDocument signedDocument = new SignedDocument();
+                    signedDocument.setName(document.getName());
+                    signedDocument.setMimeType(document.getMimeType());
+                    signedDocument.setContent(CommonUtils.getBytesFromInputStream(dssSignedDocument.openStream()));
+                    signedDocuments.add(signedDocument);
+                } else {
+                    log.error("Failed to create signed document for signTaskId={}", signTaskId);
+                }
             }
         } catch(Exception e){
             throw new SignatureException("Failed to process sign response: " + (e.getCause() != null ? e.getCause().getMessage() : e.getMessage()), e);

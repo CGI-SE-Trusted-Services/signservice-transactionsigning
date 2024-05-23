@@ -188,10 +188,10 @@ public class DefaultSignService implements SignService {
         File keyStoreFile = new File(path);
         InputStream keyStoreResource = this.getClass().getClassLoader().getResourceAsStream(path);
 
-        if(keyStoreResource != null){
+        if (keyStoreResource != null) {
             log.debug("Loading from classpath: {}", path);
             keyStore.load(keyStoreResource, password.toCharArray());
-        } else if(keyStoreFile.exists()){
+        } else if (keyStoreFile.exists()) {
             log.debug("Loading from file system: {}", path);
             keyStore.load(new FileInputStream(keyStoreFile), password.toCharArray());
         } else {

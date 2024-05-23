@@ -209,17 +209,20 @@ public class SignTool {
                 SignedDocument signedDocument = signer.signDocument(document);
                 System.out.println("Document signed successfully!");
 
+                if (signedDocument == null || signedDocument.getName() == null) {
+                    throw new SignatureException("Signed document or its name is null");
+                }
+
                 String parentPath = new File(pathName).getParent();
-                assert signedDocument != null;
                 String outputPath = (parentPath != null ? (parentPath + "/") : "") + "signed_" + signedDocument.getName();
                 if(args.length > 2){
                     outputPath = args[2];
                 }
 
                 // Store/process signed document
-                FileOutputStream outStream = new FileOutputStream(outputPath);
-                outStream.write(signedDocument.getContent());
-                outStream.close();
+                try (FileOutputStream outStream = new FileOutputStream(outputPath)) {
+                    outStream.write(signedDocument.getContent());
+                }
 
             } else if(command.equalsIgnoreCase(CMD_VERIFY)){
                 String trustStorePath = getConfig(ENV_TS_TRUSTSTORE, null);
