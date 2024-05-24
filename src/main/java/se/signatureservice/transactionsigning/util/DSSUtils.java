@@ -12,9 +12,9 @@
  *************************************************************************/
 package se.signatureservice.transactionsigning.util;
 
+import eu.europa.esig.dss.enumerations.MimeType;
 import eu.europa.esig.dss.model.DSSDocument;
 import eu.europa.esig.dss.model.InMemoryDocument;
-import eu.europa.esig.dss.model.MimeType;
 import se.signatureservice.transactionsigning.common.Document;
 
 public class DSSUtils {
