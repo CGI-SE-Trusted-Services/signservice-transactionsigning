@@ -55,7 +55,7 @@ public class ServiceManager {
             String supportServiceImpl = serviceImplementation != null ? serviceImplementation : DEFAULT_SUPPORTSERVICE_IMPLEMENTATION;
             try {
                 Class<?> c = ServiceManager.class.getClassLoader().loadClass(supportServiceImpl);
-                Object o = c.newInstance();
+                Object o = c.getDeclaredConstructor().newInstance();
                 supportService = (SupportService)o;
             } catch (Exception e) {
                 log.error("Failed to create support service", e);
@@ -85,7 +85,7 @@ public class ServiceManager {
             String signServiceImpl = serviceImplementation != null ? serviceImplementation : DEFAULT_SIGNSERVICE_IMPLEMENTATION;
             try {
                 Class<?> c = ServiceManager.class.getClassLoader().loadClass(signServiceImpl);
-                Object o = c.newInstance();
+                Object o = c.getDeclaredConstructor().newInstance();
                 signService = (SignService)o;
             } catch (Exception e) {
                 log.error("Failed to create sign service", e);
@@ -115,7 +115,7 @@ public class ServiceManager {
             String validationServiceImpl = serviceImplementation != null ? serviceImplementation : DEFAULT_VALIDATIONSERVICE_IMPLEMENTATION;
             try {
                 Class<?> c = ServiceManager.class.getClassLoader().loadClass(validationServiceImpl);
-                Object o = c.newInstance();
+                Object o = c.getDeclaredConstructor().newInstance();
                 validationService = (ValidationService)o;
             } catch (Exception e) {
                 log.error("Failed to create validation service", e);
