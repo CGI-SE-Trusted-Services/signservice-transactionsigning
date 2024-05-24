@@ -30,8 +30,8 @@ dependencies {
     implementation "eu.europa.ec.joinup.sd-dss:dss-utils:${dssVersion}"
     implementation "eu.europa.ec.joinup.sd-dss:dss-utils-apache-commons:${dssVersion}"
     implementation "eu.europa.ec.joinup.sd-dss:dss-crl-parser-x509crl:${dssVersion}"
-    implementation "org.slf4j:slf4j-api:1.7.36"
-    implementation "org.slf4j:slf4j-simple:1.7.36"
+    implementation "org.slf4j:slf4j-api:2.0.13"
+    implementation "org.slf4j:slf4j-simple:2.0.13"
     implementation "org.json:json:20240303"
     testImplementation "org.spockframework:spock-core"
 }
@@ -56,7 +56,7 @@ shadowJar {
     mergeServiceFiles()
     archiveClassifier = ''
     dependencies {
-        exclude(dependency("org.slf4j:slf4j-simple:1.7.36"))
+        exclude(dependency("org.slf4j:slf4j-simple:2.0.13"))
     }
     relocate 'org.apache', 'signservice.org.apache'
     relocate 'org.json', 'signservice.org.json'
