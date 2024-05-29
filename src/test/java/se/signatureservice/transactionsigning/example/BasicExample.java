@@ -56,10 +56,9 @@ public class BasicExample {
             System.out.println("Document validated successfully!");
 
             // Store/process signed document
-            FileOutputStream outStream = new FileOutputStream("/tmp/signed_" + signedDocument.getName());
-            outStream.write(signedDocument.getContent());
-            outStream.close();
-
+            try (FileOutputStream outStream = new FileOutputStream("/tmp/signed_" + signedDocument.getName())) {
+                outStream.write(signedDocument.getContent());
+            }
         } catch(SignatureException e){
             System.err.println("Transaction signature error occurred: " + e.getMessage());
         } catch(SignatureIOException e){

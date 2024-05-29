@@ -3,15 +3,22 @@ package se.signatureservice.transactionsigning
 
 import spock.lang.Specification
 
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.security.KeyStore
 
 class TransactionSignerSpec extends Specification {
     def "test builder using in-memory keystore and truststore"(){
         setup:
         KeyStore keyStore = KeyStore.getInstance("JKS")
-        keyStore.load(new FileInputStream(new File("src/test/resources/keystore.jks")), "TSWCeC".toCharArray())
+        Files.newInputStream(Paths.get("src/test/resources/keystore.jks")).withCloseable { keyStoreStream ->
+            keyStore.load(keyStoreStream, "TSWCeC".toCharArray())
+        }
+
         KeyStore trustStore = KeyStore.getInstance("JKS")
-        trustStore.load(new FileInputStream(new File("src/test/resources/truststore.jks")), "foo123".toCharArray())
+        Files.newInputStream(Paths.get("src/test/resources/truststore.jks")).withCloseable { trustStoreStream ->
+            trustStore.load(trustStoreStream, "foo123".toCharArray())
+        }
 
         when:
         TransactionSigner signer = new TransactionSigner.Builder()

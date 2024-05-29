@@ -18,7 +18,8 @@ import se.signatureservice.transactionsigning.supportservice.SupportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
@@ -176,7 +177,7 @@ final public class TransactionSigner {
         public Builder sslKeyStore(String keyStorePath, String keyStorePassword, String keyStoreType){
             try {
                 KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-                keyStore.load(new FileInputStream(keyStorePath), keyStorePassword.toCharArray());
+                keyStore.load(Files.newInputStream(Paths.get(keyStorePath)), keyStorePassword.toCharArray());
                 config.setSslKeyStore(keyStore);
                 config.setSslKeyStorePassword(keyStorePassword);
             } catch(Exception e){
@@ -212,7 +213,7 @@ final public class TransactionSigner {
         public Builder sslTrustStore(String trustStorePath, String trustStorePassword, String trustStoreType){
             try {
                 KeyStore trustStore = KeyStore.getInstance(trustStoreType);
-                trustStore.load(new FileInputStream(trustStorePath), trustStorePassword.toCharArray());
+                trustStore.load(Files.newInputStream(Paths.get(trustStorePath)), trustStorePassword.toCharArray());
                 config.setSslTrustStore(trustStore);
             } catch(Exception e){
                 log.error("Failed to load truststore from {}: {}", trustStorePath, e.getMessage());

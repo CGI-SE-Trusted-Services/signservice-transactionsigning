@@ -8,6 +8,11 @@ of the Signature Service Transaction Signing Library.
 === Improvements and bug fixes
 * Added missing gradlew and gradlew.bat files.
 * Fixed bug that caused memory issues in transaction signature library after heavy usage.
+* DSS library dependency has been upgraded to 5.13.
+* Upgraded SLF4J API Module to 2.0.13.
+* Upgraded SLF4J Simple Provider to 2.0.13.
+* Upgraded JSON In Java to 20240303.
+* Updated some deprecated methods.
 
 === Upgrade notes
-This release contains no breaking changes.
+Smaller improvements to logging. Now logging statements are using parameterized messages for improved performance.

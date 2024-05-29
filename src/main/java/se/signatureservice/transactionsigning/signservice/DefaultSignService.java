@@ -24,6 +24,8 @@ import javax.net.ssl.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -101,9 +103,9 @@ public class DefaultSignService implements SignService {
             if(config.getApiKey() != null) {
                 connection.setRequestProperty("Authorization", "bearer " + config.getApiKey());
             }
-            OutputStream os = connection.getOutputStream();
-            os.write(signRequest.getBytes("UTF-8"));
-            os.close();
+            try (OutputStream os = connection.getOutputStream()) {
+                os.write(signRequest.getBytes(StandardCharsets.UTF_8));
+            }
             connection.getResponseCode();
 
             BufferedReader reader;
@@ -193,7 +195,7 @@ public class DefaultSignService implements SignService {
             keyStore.load(keyStoreResource, password.toCharArray());
         } else if (keyStoreFile.exists()) {
             log.debug("Loading from file system: {}", path);
-            keyStore.load(new FileInputStream(keyStoreFile), password.toCharArray());
+            keyStore.load(Files.newInputStream(keyStoreFile.toPath()), password.toCharArray());
         } else {
             throw new InvalidParameterException("Cannot read keystore (" + path + ") from classpath or filesystem.");
         }

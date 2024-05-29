@@ -17,7 +17,8 @@ import se.signatureservice.transactionsigning.validationservice.ValidationServic
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +110,7 @@ final public class TransactionValidator {
         public Builder trustStore(String trustStorePath, String trustStorePassword, String trustStoreType){
             try {
                 KeyStore trustStore = KeyStore.getInstance(trustStoreType);
-                trustStore.load(new FileInputStream(trustStorePath), trustStorePassword.toCharArray());
+                trustStore.load(Files.newInputStream(Paths.get(trustStorePath)), trustStorePassword.toCharArray());
                 config.setTrustStore(trustStore);
             } catch(Exception e){
                 log.error("Failed to load truststore from {}: {}", trustStorePath, e.getMessage());

@@ -17,9 +17,9 @@ import se.signatureservice.transactionsigning.TransactionValidator;
 import se.signatureservice.transactionsigning.common.*;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.security.KeyStore;
 
 /**
@@ -33,11 +33,11 @@ public class CustomKeyStoreExample {
     public static final void main(String[] args){
         try {
             KeyStore keyStore = KeyStore.getInstance("JKS");
-            keyStore.load(new FileInputStream(new File("src/test/resources/keystore.jks")), "TSWCeC".toCharArray());
+            keyStore.load(Files.newInputStream(new File("src/test/resources/keystore.jks").toPath()), "TSWCeC".toCharArray());
             KeyStore trustStore = KeyStore.getInstance("JKS");
-            trustStore.load(new FileInputStream(new File("src/test/resources/truststore.jks")), "foo123".toCharArray());
+            trustStore.load(Files.newInputStream(new File("src/test/resources/truststore.jks").toPath()), "foo123".toCharArray());
             KeyStore validationTrustStore = KeyStore.getInstance("JKS");
-            validationTrustStore.load(new FileInputStream(new File("src/test/resources/validation-truststore.jks")), "foo123".toCharArray());
+            validationTrustStore.load(Files.newInputStream(new File("src/test/resources/validation-truststore.jks").toPath()), "foo123".toCharArray());
 
             // Build transaction signer instance to perform document signing
             TransactionSigner signer = new TransactionSigner.Builder()
@@ -68,10 +68,9 @@ public class CustomKeyStoreExample {
             System.out.println("Document validated successfully!");
 
             // Store/process signed document
-            FileOutputStream outStream = new FileOutputStream("/tmp/signed_" + signedDocument.getName());
-            outStream.write(signedDocument.getContent());
-            outStream.close();
-
+            try (FileOutputStream outStream = new FileOutputStream("/tmp/signed_" + signedDocument.getName())) {
+                outStream.write(signedDocument.getContent());
+            }
         } catch(SignatureException e){
             System.err.println("Transaction signature error occurred: " + e.getMessage());
         } catch(SignatureIOException e){

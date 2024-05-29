@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -66,7 +67,7 @@ public class KeyStoreCertificateSource extends CommonCertificateSource {
      * @throws IOException if the file not exists
      */
     public KeyStoreCertificateSource(File keyStoreFile, String keyStorePassword, String keyStoreType) throws IOException {
-        this(new FileInputStream(keyStoreFile), keyStoreType, keyStorePassword);
+        this(Files.newInputStream(keyStoreFile.toPath()), keyStoreType, keyStorePassword);
     }
 
     /**

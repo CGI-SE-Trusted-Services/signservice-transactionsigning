@@ -10,7 +10,9 @@ class TransactionValidatorSpec extends Specification {
     def "test builder using in-memory validation truststore"(){
         setup:
         KeyStore validationTrustStore = KeyStore.getInstance("JKS")
-        validationTrustStore.load(new FileInputStream(new File("src/test/resources/validation-truststore.jks")), "foo123".toCharArray())
+        new FileInputStream(new File("src/test/resources/validation-truststore.jks")).withCloseable { fis ->
+            validationTrustStore.load(fis, "foo123".toCharArray())
+        }
 
         when:
         TransactionValidator validator = new TransactionValidator.Builder()

@@ -17,9 +17,10 @@ import se.signatureservice.transactionsigning.TransactionValidator;
 import se.signatureservice.transactionsigning.common.*;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyStore;
 
 /**
@@ -186,14 +187,14 @@ public class SignTool {
                 if(keyStorePath != null && keyStorePassword != null){
                     System.out.println("Using SSL Keystore: " + keyStorePath);
                     KeyStore keyStore = KeyStore.getInstance(keyStoreType != null ? keyStoreType : "JKS");
-                    keyStore.load(new FileInputStream(keyStorePath), keyStorePassword.toCharArray());
+                    keyStore.load(Files.newInputStream(Paths.get(keyStorePath)), keyStorePassword.toCharArray());
                     transactionSignerBuilder.sslKeyStore(keyStore, keyStorePassword);
                 }
 
                 if(trustStorePath != null && trustStorePassword != null){
                     System.out.println("Using validation truststore: " + trustStorePath);
                     KeyStore trustStore = KeyStore.getInstance(trustStoreType != null ? trustStoreType : "JKS");
-                    trustStore.load(new FileInputStream(trustStorePath), trustStorePassword.toCharArray());
+                    trustStore.load(Files.newInputStream(Paths.get(trustStorePath)), trustStorePassword.toCharArray());
                     transactionSignerBuilder.sslTrustStore(trustStore);
                 }
 
@@ -235,7 +236,7 @@ public class SignTool {
                 if(trustStorePath != null && trustStorePassword != null){
                     System.out.println("Using validation truststore: " + trustStorePath);
                     KeyStore validationTrustStore = KeyStore.getInstance(trustStoreType != null ? trustStoreType : "JKS");
-                    validationTrustStore.load(new FileInputStream(trustStorePath), trustStorePassword.toCharArray());
+                    validationTrustStore.load(Files.newInputStream(Paths.get(trustStorePath)), trustStorePassword.toCharArray());
                     transactionValidatorBuilder.trustStore(validationTrustStore);
                 }
 
