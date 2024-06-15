@@ -10,7 +10,7 @@ of the Signature Service Transaction Signing Library.
 * Bump SLF4J Simple Provider to 2.0.13.
 * Bump JSON In Java to 20240303.
 * Added missing gradlew and gradlew.bat files.
-* Fixed bug that caused memory issues in transaction signature library after heavy usage.
+* Fixed bug that caused memory issues after heavy usage.
 * DSS library dependency has been upgraded to 5.13.
 * Updated some deprecated methods.
 
