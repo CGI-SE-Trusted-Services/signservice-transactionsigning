@@ -10,6 +10,7 @@ of the Signature Service Transaction Signing Library.
 * Bump SLF4J Simple Provider to 2.0.16.
 
 === Upgrade notes
+This release contains no breaking changes.
 
 == Version 2405.1
 
