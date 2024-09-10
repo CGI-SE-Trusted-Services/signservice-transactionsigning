@@ -8,6 +8,7 @@ of the Signature Service Transaction Signing Library.
 === Improvements and bug fixes
 * Bump SLF4J API Module to 2.0.16.
 * Bump SLF4J Simple Provider to 2.0.16.
+* Upgraded Gradle build tool to version 7.6.4.
 
 === Upgrade notes
 This release contains no breaking changes.
