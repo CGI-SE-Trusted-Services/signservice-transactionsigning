@@ -31,7 +31,7 @@ import java.util.List;
  * @author Tobias Agerberg
  */
 final public class TransactionValidator {
-    private final static Logger log = LoggerFactory.getLogger(TransactionSigner.class);
+    private final static Logger log = LoggerFactory.getLogger(TransactionValidator.class);
 
     private ValidationService validationService;
     private ValidatorConfig config;
