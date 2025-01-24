@@ -3,6 +3,16 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
+== Version 2502.1
+
+=== Improvements and bug fixes
+* Resolved build failure for tests caused by a missing spock-bom dependency.
+* Upgraded com.github.johnrengelman.shadow from 6.1.0 to 7.1.2.
+* Reformatted build.gradle to adopt the modern plugin application syntax.
+
+=== Upgrade notes
+This release contains no breaking changes.
+
 == Version 2501.1
 
 === Improvements and bug fixes

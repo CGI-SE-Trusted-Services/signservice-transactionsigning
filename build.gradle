@@ -1,8 +1,11 @@
-group "se.signatureservice.support"
+plugins {
+    id("java")
+    id("groovy")
+    id("java-library")
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+}
 
-apply plugin: "java"
-apply plugin: "groovy"
-apply plugin: "java-library"
+group "se.signatureservice.support"
 
 pluginManager.withPlugin('org.certificateservices.gradle.certservice-gradle-plugin') {
     certserviceSettings {
@@ -33,6 +36,7 @@ dependencies {
     implementation "org.slf4j:slf4j-api:2.0.16"
     implementation "org.slf4j:slf4j-simple:2.0.16"
     implementation "org.json:json:20250107"
+    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
     testImplementation "org.spockframework:spock-core"
 }
 
@@ -40,17 +44,6 @@ test {
     useJUnitPlatform()
 }
 
-buildscript {
-    repositories {
-        maven { url "https://plugins.gradle.org/m2/" }
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
-    }
-}
-
-apply plugin: 'com.github.johnrengelman.shadow'
 shadowJar {
     archiveBaseName = 'signservice-transactionsigning'
     mergeServiceFiles()
