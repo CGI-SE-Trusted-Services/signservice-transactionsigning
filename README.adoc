@@ -118,7 +118,9 @@ the default XML processor features and/or attributes, indicated by the following
 This can be solved by removing unsupported attributes and/or disabling unsupported features by
 using a customized TransformerFactoryBuilder. The example error above can be resolved with the
 following piece of code.
-```
+
+[source]
+----
     // Necessary imports
     import eu.europa.esig.dss.jaxb.TransformerFactoryBuilder;
     import eu.europa.esig.dss.jaxb.XmlDefinerUtils;
@@ -129,7 +131,7 @@ following piece of code.
     secureTransformerFactoryBuilder.removeAttribute("http://javax.xml.XMLConstants/property/accessExternalStylesheet");
     // Instruct DSS library to use it
     XmlDefinerUtils.getInstance().setTransformerFactoryBuilder(secureTransformerFactoryBuilder);
-```
+----
 This should be executed during application startup before any document is signed or validated.
 
 == CLI Tool

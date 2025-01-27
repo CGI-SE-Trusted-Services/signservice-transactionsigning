@@ -9,6 +9,7 @@ of the Signature Service Transaction Signing Library.
 * Resolved build failure for tests caused by a missing spock-bom dependency.
 * Upgraded com.github.johnrengelman.shadow from 6.1.0 to 7.1.2.
 * Reformatted build.gradle to adopt the modern plugin application syntax.
+* Removed redundant java plugin. Already applied by Java Library Plugin.
 
 === Upgrade notes
 This release contains no breaking changes.
