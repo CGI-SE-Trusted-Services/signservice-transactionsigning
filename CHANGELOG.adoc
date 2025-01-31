@@ -1,0 +1,52 @@
+= Changelog
+
+This document provides information about changes that have been made for each new version
+of the Signature Service Transaction Signing Library.
+
+== Version 2502.1
+
+=== Improvements and bug fixes
+* Resolved build failure for tests caused by a missing spock-bom dependency.
+* Upgraded com.github.johnrengelman.shadow from 6.1.0 to 7.1.2.
+* Reformatted build.gradle to adopt the modern plugin application syntax.
+* Removed redundant java plugin. Already applied by Java Library Plugin.
+
+=== Upgrade notes
+This release contains no breaking changes.
+
+== Version 2501.1
+
+=== Improvements and bug fixes
+* Bump Gradle to 7.6.4 in wrapper.
+* Bump Grails from 6.2.0 to 6.2.3.
+* Bump Grails Gradle Plugin from 6.2.0 to 6.2.4.
+* Bump Groovy to 3.0.23.
+* Bump JSON In Java from 20240303 to 20250107.
+
+=== Upgrade notes
+This release contains no breaking changes.
+
+== Version 2408.1
+
+=== Improvements and bug fixes
+* Bump SLF4J API Module to 2.0.16.
+* Bump SLF4J Simple Provider to 2.0.16.
+* Upgraded Gradle build tool to version 7.6.4.
+
+=== Upgrade notes
+This release contains no breaking changes.
+
+== Version 2405.1
+
+=== Improvements and bug fixes
+* Bump SLF4J API Module to 2.0.13.
+* Bump SLF4J Simple Provider to 2.0.13.
+* Bump JSON In Java to 20240303.
+* Added missing gradlew and gradlew.bat files.
+* Fixed bug that caused memory issues after heavy usage.
+* DSS library dependency has been upgraded to 5.13.
+* Updated some deprecated methods.
+
+=== Upgrade notes
+Smaller improvements to logging. Now logging statements are using parameterized messages for improved performance.
+Improvements to resource management by converting existing code to use try-with-resources for automatic closure.
