@@ -24,6 +24,19 @@ repositories {
     mavenCentral()
 }
 
+configurations.configureEach {
+    resolutionStrategy {
+        eachDependency { details ->
+            // avoid bc dependencies compiled with java 21,
+            // specified by eu.europa.ec.joinup.sd-dss:dss-spi:6.2 etc.
+            // since that does not work with current shadowJar
+            if (details.requested.group == 'org.bouncycastle') {
+                details.useVersion '1.76'
+            }
+        }
+    }
+}
+
 dependencies {
     implementation "eu.europa.ec.joinup.sd-dss:dss-xades:${dssVersion}"
     implementation "eu.europa.ec.joinup.sd-dss:dss-cades:${dssVersion}"
@@ -32,6 +45,7 @@ dependencies {
     implementation "eu.europa.ec.joinup.sd-dss:dss-utils:${dssVersion}"
     implementation "eu.europa.ec.joinup.sd-dss:dss-utils-apache-commons:${dssVersion}"
     implementation "eu.europa.ec.joinup.sd-dss:dss-crl-parser-x509crl:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-validation:${dssVersion}"
     implementation "org.slf4j:slf4j-api:2.0.16"
     implementation "org.slf4j:slf4j-simple:2.0.16"
     implementation "org.json:json:20250107"
