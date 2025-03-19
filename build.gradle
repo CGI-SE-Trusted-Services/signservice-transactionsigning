@@ -27,11 +27,12 @@ repositories {
 configurations.configureEach {
     resolutionStrategy {
         eachDependency { details ->
-            // avoid bc dependencies compiled with java 21,
-            // specified by eu.europa.ec.joinup.sd-dss:dss-spi:6.2 etc.
-            // since that does not work with current shadowJar
+            // 1.77 is the highest version of bc jars that is tolerated
+            // by the current shadowJar plugin, since later version
+            // contain classes compiled with java 21.
+            // Upgrade of shadowJar plugin requires higher versions of gradle
             if (details.requested.group == 'org.bouncycastle') {
-                details.useVersion '1.76'
+                details.useVersion '1.77'
             }
         }
     }
