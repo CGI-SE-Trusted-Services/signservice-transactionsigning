@@ -5,7 +5,20 @@ of the Signature Service Transaction Signing Library.
 
 == Version 2503.1
 
+=== Upgrade notes
+This release contains breaking changes.
+
+=== Improvements and bug fixes
 * Upgraded eu.europa.ec.joinup.sd-dss to version 6.2
+* Bundled validation policy now accepts the RSASSA-PSS algorithm for signatures, and on signing certificate
+* Fixed thread-related issue causing "No pending transaction found with requestId: XXX" errors under high TPS.
+* Changed the default signature algorithm from `SHA256withRSA` to `SHA512withRSAandMGF1`.
+This can be overridden using:
+
+    TransactionSigner signer = new TransactionSigner.Builder()
+        .signatureAlgorithm("SHA256withRSA")
+
+* Added DSS PAdES PDFBox dependency to resolve missing IPdfObjFactory implementation.
 
 == Version 2502.1
 

@@ -12,10 +12,8 @@
  *************************************************************************/
 package se.signatureservice.transactionsigning.common;
 
-import org.json.JSONObject;
-
 import java.util.Date;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
 /**
@@ -25,35 +23,23 @@ import java.util.Map;
  * @author Tobias Agerberg
  */
 public class PendingSignature {
-    private JSONObject signRequest;
-    private Map<Integer, Document> documents;
-    private Date signingDate;
+    private final Map<Integer, Document> documents;
+    private final Date signingDate;
 
-    public PendingSignature(){
-        documents = new HashMap<>();
+    public PendingSignature(Date signingDate) {
+        this.signingDate = signingDate;
+        this.documents = new ConcurrentHashMap<>();
     }
 
     public Map<Integer, Document> getDocuments() {
         return documents;
     }
 
-    public void addDocument(Integer signTaskId, Document document){
+    public void addDocument(Integer signTaskId, Document document) {
         documents.put(signTaskId, document);
     }
 
-    public JSONObject getSignRequest() {
-        return signRequest;
-    }
-
-    public void setSignRequest(JSONObject signRequest) {
-        this.signRequest = signRequest;
-    }
-
-    public Date getSigningDate(){
+    public Date getSigningDate() {
         return signingDate;
-    }
-
-    public void setSigningDate(Date signingDate){
-        this.signingDate = signingDate;
     }
 }

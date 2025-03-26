@@ -47,6 +47,7 @@ dependencies {
     implementation "eu.europa.ec.joinup.sd-dss:dss-utils-apache-commons:${dssVersion}"
     implementation "eu.europa.ec.joinup.sd-dss:dss-crl-parser-x509crl:${dssVersion}"
     implementation "eu.europa.ec.joinup.sd-dss:dss-validation:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-pades-pdfbox:${dssVersion}"
     implementation "org.slf4j:slf4j-api:2.0.16"
     implementation "org.slf4j:slf4j-simple:2.0.16"
     implementation "org.json:json:20250107"

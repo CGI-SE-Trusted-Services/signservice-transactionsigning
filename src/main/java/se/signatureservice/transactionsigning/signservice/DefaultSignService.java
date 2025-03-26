@@ -12,13 +12,13 @@
  *************************************************************************/
 package se.signatureservice.transactionsigning.signservice;
 
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.signatureservice.transactionsigning.SignerConfig;
 import se.signatureservice.transactionsigning.common.InvalidConfigurationException;
 import se.signatureservice.transactionsigning.common.InvalidParameterException;
 import se.signatureservice.transactionsigning.common.SignatureException;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
 import java.io.*;
@@ -77,17 +77,17 @@ public class DefaultSignService implements SignService {
      * @throws SignatureException If an error occurred during signature request.
      */
     public String requestSignature(String signRequest) throws SignatureException {
-        String response = null;
-        HttpURLConnection connection = null;
-
         if(!initialized){
             throw new SignatureException("SignService must be initialized before calling requestSignature");
         }
 
+        String response = null;
+        HttpURLConnection connection = null;
+
         try {
             URL url = new URL(config.getApiEndpoint());
             if(url.getProtocol().equalsIgnoreCase("https")){
-                connection = (HttpsURLConnection)url.openConnection();
+                connection = (HttpsURLConnection) url.openConnection();
 
                 if(sslContext != null){
                     ((HttpsURLConnection)connection).setSSLSocketFactory(sslContext.getSocketFactory());

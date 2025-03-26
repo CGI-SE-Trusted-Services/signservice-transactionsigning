@@ -33,7 +33,7 @@ public class MimeType {
      */
     public static final MimeType BINARY = new MimeType("application/octet-stream");
 
-    private String mimeType;
+    private final String mimeType;
     private MimeType(String mimeType){
         this.mimeType = mimeType;
     }
@@ -79,9 +79,7 @@ public class MimeType {
         }
 
         if(o instanceof MimeType){
-            if(((MimeType) o).mimeType.equals(mimeType)){
-                return true;
-            }
+            return ((MimeType) o).mimeType.equals(mimeType);
         }
         return false;
     }

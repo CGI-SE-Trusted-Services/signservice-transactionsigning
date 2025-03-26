@@ -18,6 +18,7 @@ import se.signatureservice.transactionsigning.supportservice.SupportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyStore;
@@ -33,8 +34,8 @@ import java.util.List;
  */
 final public class TransactionSigner {
     private final static Logger log = LoggerFactory.getLogger(TransactionSigner.class);
-    private SupportService supportService;
-    private SignService signService;
+    private final SupportService supportService;
+    private final SignService signService;
     private SignerConfig config;
 
     private TransactionSigner(SignerConfig config) throws InvalidConfigurationException {
@@ -177,7 +178,9 @@ final public class TransactionSigner {
         public Builder sslKeyStore(String keyStorePath, String keyStorePassword, String keyStoreType){
             try {
                 KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-                keyStore.load(Files.newInputStream(Paths.get(keyStorePath)), keyStorePassword.toCharArray());
+                try (InputStream keyStoreStream = Files.newInputStream(Paths.get(keyStorePath))) {
+                    keyStore.load(keyStoreStream, keyStorePassword.toCharArray());
+                }
                 config.setSslKeyStore(keyStore);
                 config.setSslKeyStorePassword(keyStorePassword);
             } catch(Exception e){
@@ -213,7 +216,12 @@ final public class TransactionSigner {
         public Builder sslTrustStore(String trustStorePath, String trustStorePassword, String trustStoreType){
             try {
                 KeyStore trustStore = KeyStore.getInstance(trustStoreType);
-                trustStore.load(Files.newInputStream(Paths.get(trustStorePath)), trustStorePassword.toCharArray());
+                try (InputStream trustStoreStream = Files.newInputStream(Paths.get(trustStorePath))) {
+                    trustStore.load(
+                            trustStoreStream,
+                            (trustStorePassword != null) ? trustStorePassword.toCharArray() : null
+                    );
+                }
                 config.setSslTrustStore(trustStore);
             } catch(Exception e){
                 log.error("Failed to load truststore from {}: {}", trustStorePath, e.getMessage());
