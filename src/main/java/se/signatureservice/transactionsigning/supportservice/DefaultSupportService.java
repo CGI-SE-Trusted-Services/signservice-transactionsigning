@@ -61,7 +61,7 @@ public class DefaultSupportService implements SupportService {
     private final CAdESService cAdESService;
 
     private SignerConfig config;
-    private volatile boolean initialized;
+    private boolean initialized;
 
     private final Map<String, PendingSignature> pendingSignatures;
 
@@ -78,13 +78,9 @@ public class DefaultSupportService implements SupportService {
      * Initialize the support service instance.
      *
      * @param config Configuration to use for the support service instance.
-     * @throws InvalidConfigurationException If an error occurred when initializing the service due to invalid configuration.
      */
     @Override
-    public void init(SignerConfig config) throws InvalidConfigurationException {
-        if (initialized) {
-            throw new InvalidConfigurationException("Service is already initialized");
-        }
+    public void init(SignerConfig config) {
         this.config = config;
         initialized = true;
     }
