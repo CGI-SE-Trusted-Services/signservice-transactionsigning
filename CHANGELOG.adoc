@@ -6,7 +6,7 @@ of the Signature Service Transaction Signing Library.
 == Version 2503.1
 
 === Upgrade notes
-This release contains breaking changes.
+This release contains *breaking changes*.
 
 === Improvements and bug fixes
 * Upgraded eu.europa.ec.joinup.sd-dss to version 6.2
