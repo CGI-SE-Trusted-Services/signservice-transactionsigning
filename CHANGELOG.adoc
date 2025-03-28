@@ -19,6 +19,7 @@ This can be overridden using:
         .signatureAlgorithm("SHA256withRSA")
 
 * Added DSS PAdES PDFBox dependency to resolve missing IPdfObjFactory implementation.
+* Minor improvements to automatic stream closing, making it more concise.
 
 == Version 2502.1
 
