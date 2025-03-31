@@ -1,6 +1,6 @@
 package se.signatureservice.transactionsigning
 
-import eu.europa.esig.dss.validation.CommonCertificateVerifier
+import eu.europa.esig.dss.spi.validation.CommonCertificateVerifier
 import se.signatureservice.transactionsigning.validationservice.DefaultValidationService
 import spock.lang.Specification
 

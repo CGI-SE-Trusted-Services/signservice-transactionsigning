@@ -21,7 +21,7 @@ import java.security.KeyStore;
  */
 public class SignerConfig {
     public final static String DEFAULT_SIGN_SSL_ALGORITHM = "TLSv1.2";
-    public final static String DEFAULT_SIGNATUREALGORITHM = "SHA256withRSA";
+    public final static String DEFAULT_SIGNATUREALGORITHM = "SHA512withRSAandMGF1";
     public final static String DEFAULT_XADES_SIGNATURELEVEL = "XAdES-BASELINE-B";
     public final static String DEFAULT_XADES_SIGNATUREPACKAGING = "ENVELOPED";
     public final static String DEFAULT_XADES_SIGNEDINFOCANONICALIZATIONMETHOD = "http://www.w3.org/2001/10/xml-exc-c14n#";
@@ -80,7 +80,7 @@ public class SignerConfig {
 
     /**
      * Signature algorithm to use when signing document.
-     * Default: "SHA256withRSA"
+     * Default: "SHA512withRSAandMGF1"
      */
     private String signatureAlgorithm;
 

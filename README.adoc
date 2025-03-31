@@ -23,6 +23,28 @@ To successfully use the library the following is needed:
     - keyID
     - signType
 
+== Installation
+
+=== Maven Dependency
+The library can be used within a maven project by adding the following dependency:
+
+[source]
+----
+<dependency>
+    <groupId>se.signatureservice.support</groupId>
+    <artifactId>signservice-transactionsigning</artifactId>
+    <version>2503.1</version>
+</dependency>
+----
+
+=== Gradle Dependency
+The library can be used within a Gradle project by adding the following dependency:
+
+[source]
+----
+implementation 'se.signatureservice.support:signservice-transactionsigning:2503.1'
+----
+
 == Examples
 A full working example is available in `BasicExample.java`. This section goes
 through the essential parts of basic usage.
