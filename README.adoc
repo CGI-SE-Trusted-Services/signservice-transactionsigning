@@ -33,7 +33,7 @@ The library can be used within a maven project by adding the following dependenc
 <dependency>
     <groupId>se.signatureservice.support</groupId>
     <artifactId>signservice-transactionsigning</artifactId>
-    <version>2503.1</version>
+    <version>2504.1</version>
 </dependency>
 ----
 
@@ -61,6 +61,7 @@ please read the Javadoc for `TransactionSigner.Builder`.
             .apiEndpoint("http://192.168.99.21:8080/lcso/signRequest/rest/v1")
             .apiKey("iqxMo5Im4ya2EZsPravicPxj")
             .signType("rsa2048_sha256")
+            .signatureAlgorithm("SHA256withRSA")
             .keyId("testkey")
             .build();
 
