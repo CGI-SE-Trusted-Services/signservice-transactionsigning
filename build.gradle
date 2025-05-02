@@ -37,6 +37,12 @@ dependencies {
     implementation "org.slf4j:slf4j-api:2.0.17"
     implementation "org.slf4j:slf4j-simple:2.0.17"
     implementation "org.json:json:20250107"
+
+    // To fix vulnerability CVE-2025-27820 derived from
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.4.4'
+    implementation 'org.apache.httpcomponents.core5:httpcore5:5.3.4'
+    implementation 'org.apache.httpcomponents.core5:httpcore5-h2:5.3.4'
+
     testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
     testImplementation "org.spockframework:spock-core"
 }
