@@ -3,6 +3,23 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
+== Version 2505.1
+
+=== Upgrade notes
+Changes in preparation for moving to java 21 in Q4 2025.
+
+=== Changes
+* Removed old test library org.codehaus.groovy.modules.http-builder:http-builder
+* Bump SLF4J to 2.0.17
+* Removed not related internal build logic from build.gradle.
+* Updated the Gradle Wrapper files(gradlew, gradlew.bat, gradle-wrapper.jar) to align with the configured Gradle version.
+* Upgrades in SignTool CLI: Now allows explicitly setting the signature algorithm to be used.
+* Fixed vulnerability CVE-2025-27820, derived from dependencies of eu.europa.ec.joinup.sd-dss:dss-service, by upgrading libraries:
+
+    org.apache.httpcomponents.client5:httpclient5 to 5.4.4
+    org.apache.httpcomponents.core5:httpcore5 to 5.3.4
+    org.apache.httpcomponents.core5:httpcore5-h2 to 5.3.4
+
 == Version 2503.1
 
 === Upgrade notes
