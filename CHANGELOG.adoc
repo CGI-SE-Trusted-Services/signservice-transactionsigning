@@ -9,7 +9,7 @@ of the Signature Service Transaction Signing Library.
 Changes in preparation for moving to java 21 in Q4 2025.
 
 === Changes
-* Removed old test library org.codehaus.groovy.modules.http-builder:http-builder
+* Replaced old test library org.codehaus.groovy.modules.http-builder:http-builder with com.squareup.okhttp3:okhttp
 * Bump SLF4J to 2.0.17
 * Removed not related internal build logic from build.gradle.
 * Updated the Gradle Wrapper files(gradlew, gradlew.bat, gradle-wrapper.jar) to align with the configured Gradle version.
@@ -38,6 +38,11 @@ This can be overridden using:
 * Added DSS PAdES PDFBox dependency to resolve missing IPdfObjFactory implementation.
 * Minor improvements to automatic stream closing, making it more concise.
 
+== Version 2502.3
+
+=== Improvements and bug fixes
+* No change.
+
 == Version 2502.1
 
 === Improvements and bug fixes
@@ -60,6 +65,14 @@ This release contains no breaking changes.
 
 === Upgrade notes
 This release contains no breaking changes.
+
+== Version 2408.3
+
+=== Upgrade notes
+This release contains breaking changes.
+
+=== Improvements and bug fixes
+* Fixed thread-related issue causing "No pending transaction found with requestId: XXX" errors under high TPS.
 
 == Version 2408.1
 
