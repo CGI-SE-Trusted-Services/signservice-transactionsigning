@@ -10,20 +10,6 @@ repositories {
     mavenCentral()
 }
 
-configurations.configureEach {
-    resolutionStrategy {
-        eachDependency { details ->
-            // 1.77 is the highest version of bc jars that is tolerated
-            // by the current shadowJar plugin, since later version
-            // contain classes compiled with java 21.
-            // Upgrade of shadowJar plugin requires higher versions of gradle
-            if (details.requested.group == 'org.bouncycastle') {
-                details.useVersion '1.77'
-            }
-        }
-    }
-}
-
 dependencies {
     implementation "eu.europa.ec.joinup.sd-dss:dss-xades:${dssVersion}"
     implementation "eu.europa.ec.joinup.sd-dss:dss-cades:${dssVersion}"
@@ -55,6 +41,7 @@ shadowJar {
     archiveBaseName = 'signservice-transactionsigning'
     mergeServiceFiles()
     archiveClassifier = ''
+    exclude 'META-INF/versions/21/**'
     dependencies {
         exclude(dependency("org.slf4j:slf4j-simple:2.0.17"))
     }
