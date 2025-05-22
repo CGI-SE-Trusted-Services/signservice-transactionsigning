@@ -169,7 +169,7 @@ NOTE: To enable logging a SLF4J binding must be placed on the classpath (ex. `sl
     export TS_SIGNTYPE="rsaSign_ades"
     export TS_KEYID="testKey"
     export TS_APIKEY="iqxMo5Im4ya2EZsPravicPxj"
-    java -cp certservice-transactionsigning-1905.1.jar \
+    java -cp signservice-transactionsigning-1905.1.jar \
      se.signatureservice.transactionsigning.cli.SignTool \
      sign /some/path/testdocument.xml /tmp/signeddoc.xml
 
@@ -180,7 +180,7 @@ NOTE: To enable logging a SLF4J binding must be placed on the classpath (ex. `sl
     export TS_KEYID="testKey"
     export TS_KEYSTORE="/some/path/keystore.jks"
     export TS_KEYSTORE_PASSWORD="somepassword"
-    java -cp certservice-transactionsigning-1905.1.jar \
+    java -cp signservice-transactionsigning-1905.1.jar \
      se.signatureservice.transactionsigning.cli.SignTool \
      sign /some/path/testdocument.xml /tmp/signeddoc.xml
 
@@ -193,7 +193,7 @@ NOTE: To enable logging a SLF4J binding must be placed on the classpath (ex. `sl
     export TS_KEYSTORE_PASSWORD="somepassword"
     export TS_TRUSTSTORE="/tmp/ssl-truststore.jks"
     export TS_TRUSTSTORE_PASSWORD="foo123"
-    java -cp certservice-transactionsigning-1905.1.jar \
+    java -cp signservice-transactionsigning-1905.1.jar \
      se.signatureservice.transactionsigning.cli.SignTool \
      sign /some/path/testdocument.xml /tmp/signeddoc.xml
 
@@ -201,7 +201,7 @@ NOTE: To enable logging a SLF4J binding must be placed on the classpath (ex. `sl
 
     export TS_TRUSTSTORE="/tmp/truststore.jks"
     export TS_TRUSTSTORE_PASSWORD="foo123"
-    java -cp certservice-transactionsigning-1905.1.jar \
+    java -cp signservice-transactionsigning-1905.1.jar \
      se.signatureservice.transactionsigning.cli.SignTool \
      verify /tmp/signeddoc.xml
 
