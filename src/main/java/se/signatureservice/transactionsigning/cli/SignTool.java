@@ -40,6 +40,7 @@ import java.security.KeyStore;
  * TS_TRUSTSTORE_PASSWORD : Password protecting the truststore.
  * TS_TRUSTSTORE_TYPE     : Type of truststore (optional, default is "JKS")
  * TS_APIKEY              : API Key to use for authentication (optional)
+ * TS_SIGNATUREALGORITHM  : Signature algorithm to use when signing documents (optional, default is "SHA512withRSAandMGF1")
  *
  * -- VERIFY --
  * TS_TRUSTSTORE          : Truststore to use when validating documents.
@@ -72,6 +73,17 @@ public class SignTool {
     private static final String ENV_TS_TRUSTSTORE_PASSWORD = "TS_TRUSTSTORE_PASSWORD";
     private static final String ENV_TS_TRUSTSTORE_TYPE = "TS_TRUSTSTORE_TYPE";
     private static final String ENV_TS_ENABLE_REVOCATION = "TS_ENABLE_REVOCATION";
+    private static final String ENV_TS_SIGNATUREALGORITHM = "TS_SIGNATUREALGORITHM";
+
+    private static final String ENV_TS_CADES_SIGNATURELEVEL = "TS_CADES_SIGNATURELEVEL";
+    private static final String ENV_TS_CADES_SIGNATUREPACKING = "TS_CADES_SIGNATUREPACKING";
+    private static final String ENV_TS_PADES_SIGNATURELEVEL = "TS_PADES_SIGNATURELEVEL";
+    private static final String ENV_TS_PADES_SIGNATUREPACKING = "TS_PADES_SIGNATUREPACKING";
+    private static final String ENV_TS_XADES_SIGNATURELEVEL = "TS_XADES_SIGNATURELEVEL";
+    private static final String ENV_TS_XADES_SIGNATUREPACKING = "TS_XADES_SIGNATUREPACKING";
+    private static final String ENV_TS_XADES_SIGNEDINFO_CANONICALIZATION = "TS_XADES_SIGNEDINFO_CANONICALIZATION";
+    private static final String ENV_TS_XADES_SIGNEDPROPERTIES_CANONICALIZATION = "TS_XADES_SIGNEDPROPERTIES_CANONICALIZATION";
+    private static final String ENV_TS_XADES_XPATH_LOCATION = "TS_XADES_XPATH_LOCATION";
 
     private static final String CMD_SIGN = "sign";
     private static final String CMD_VERIFY = "verify";
@@ -112,22 +124,23 @@ public class SignTool {
         System.out.println("Configuration through environment variables or JVM parameters:");
         System.out.println();
         System.out.println("-- SIGN --");
-        System.out.println("TS_APIENDPOINT         : URL to API endpoint to use.");
-        System.out.println("TS_SIGNTYPE            : Signature type to request/use.");
-        System.out.println("TS_KEYID               : Key ID to request/use.");
-        System.out.println("TS_KEYSTORE            : Keystore to use for client authentication.");
-        System.out.println("TS_KEYSTORE_PASSWORD   : Password protecting the keystore.");
-        System.out.println("TS_KEYSTORE_TYPE       : Type of keystore (optional, default is \"JKS\")");
-        System.out.println("TS_TRUSTSTORE          : Truststore to use when validating server.");
-        System.out.println("TS_TRUSTSTORE_PASSWORD : Password protecting the truststore.");
-        System.out.println("TS_TRUSTSTORE_TYPE     : Type of truststore (optional, default is \"JKS\")");
-        System.out.println("TS_APIKEY              : API Key to use for authentication (optional)");
+        System.out.println(ENV_TS_APIENDPOINT + "         : URL to API endpoint to use.");
+        System.out.println(ENV_TS_SIGNTYPE + "            : Signature type to request/use.");
+        System.out.println(ENV_TS_KEYID + "               : Key ID to request/use.");
+        System.out.println(ENV_TS_KEYSTORE + "            : Keystore to use for client authentication.");
+        System.out.println(ENV_TS_KEYSTORE_PASSWORD + "   : Password protecting the keystore.");
+        System.out.println(ENV_TS_KEYSTORE_TYPE + "       : Type of keystore (optional, default is \"JKS\")");
+        System.out.println(ENV_TS_TRUSTSTORE + "          : Truststore to use when validating server.");
+        System.out.println(ENV_TS_TRUSTSTORE_PASSWORD + " : Password protecting the truststore.");
+        System.out.println(ENV_TS_TRUSTSTORE_TYPE + "     : Type of truststore (optional, default is \"JKS\")");
+        System.out.println(ENV_TS_APIKEY + "              : API Key to use for authentication (optional)");
+        System.out.println(ENV_TS_SIGNATUREALGORITHM + "  : Signature algorithm to use when signing documents (optional, default is \"SHA512withRSAandMGF1\").");
         System.out.println();
         System.out.println("-- VERIFY --");
-        System.out.println("TS_TRUSTSTORE          : Truststore to use when validating documents.");
-        System.out.println("TS_TRUSTSTORE_PASSWORD : Password protecting the truststore.");
-        System.out.println("TS_TRUSTSTORE_TYPE     : Type of truststore (optional, default is \"JKS\")");
-        System.out.println("TS_ENABLE_REVOCATION   : Set to \"true\" to enable revocation check.");
+        System.out.println(ENV_TS_TRUSTSTORE + "          : Truststore to use when validating documents.");
+        System.out.println(ENV_TS_TRUSTSTORE_PASSWORD + " : Password protecting the truststore.");
+        System.out.println(ENV_TS_TRUSTSTORE_TYPE + "     : Type of truststore (optional, default is \"JKS\")");
+        System.out.println(ENV_TS_ENABLE_REVOCATION + "   : Set to \"true\" to enable revocation check.");
         System.out.println();
         System.out.println("Sign Usage:");
         System.out.println("SignTool sign <document to sign> [output path]");
@@ -179,23 +192,83 @@ public class SignTool {
 
                 String keyStorePath = getConfig(ENV_TS_KEYSTORE, null);
                 String keyStorePassword = getConfig(ENV_TS_KEYSTORE_PASSWORD, null);
-                String keyStoreType = getConfig(ENV_TS_KEYSTORE_TYPE, null);
+                String keyStoreType = getConfig(ENV_TS_KEYSTORE_TYPE, "JKS");
                 String trustStorePath = getConfig(ENV_TS_TRUSTSTORE, null);
                 String trustStorePassword = getConfig(ENV_TS_TRUSTSTORE_PASSWORD, null);
-                String trustStoreType = getConfig(ENV_TS_TRUSTSTORE_TYPE, null);
+                String trustStoreType = getConfig(ENV_TS_TRUSTSTORE_TYPE, "JKS");
 
                 if(keyStorePath != null && keyStorePassword != null){
                     System.out.println("Using SSL Keystore: " + keyStorePath);
-                    KeyStore keyStore = KeyStore.getInstance(keyStoreType != null ? keyStoreType : "JKS");
+                    KeyStore keyStore = KeyStore.getInstance(keyStoreType);
                     keyStore.load(Files.newInputStream(Paths.get(keyStorePath)), keyStorePassword.toCharArray());
                     transactionSignerBuilder.sslKeyStore(keyStore, keyStorePassword);
                 }
 
                 if(trustStorePath != null && trustStorePassword != null){
                     System.out.println("Using validation truststore: " + trustStorePath);
-                    KeyStore trustStore = KeyStore.getInstance(trustStoreType != null ? trustStoreType : "JKS");
+                    KeyStore trustStore = KeyStore.getInstance(trustStoreType);
                     trustStore.load(Files.newInputStream(Paths.get(trustStorePath)), trustStorePassword.toCharArray());
                     transactionSignerBuilder.sslTrustStore(trustStore);
+                }
+
+                String signatureAlgorithm = getConfig(ENV_TS_SIGNATUREALGORITHM, null);
+                if(signatureAlgorithm != null){
+                    System.out.println("Using signature algorithm: " + signatureAlgorithm);
+                    transactionSignerBuilder.signatureAlgorithm(signatureAlgorithm);
+                }
+
+                String cadesSignatureLevel = getConfig(ENV_TS_CADES_SIGNATURELEVEL, null);
+                if(cadesSignatureLevel != null){
+                    System.out.println("Using Cades Signature Level: " + cadesSignatureLevel);
+                    transactionSignerBuilder.cadESSignatureLevel(cadesSignatureLevel);
+                }
+
+                String cadesSignaturePacking = getConfig(ENV_TS_CADES_SIGNATUREPACKING, null);
+                if (cadesSignaturePacking != null) {
+                    System.out.println("Using Cades Signature Packing: " + cadesSignaturePacking);
+                    transactionSignerBuilder.cadESSignaturePacking(cadesSignaturePacking);
+                }
+
+                String padesSignatureLevel = getConfig(ENV_TS_PADES_SIGNATURELEVEL, null);
+                if (padesSignatureLevel != null) {
+                    System.out.println("Using Pades Signature Level: " + padesSignatureLevel);
+                    transactionSignerBuilder.padESSignatureLevel(padesSignatureLevel);
+                }
+
+                String padesSignaturePacking = getConfig(ENV_TS_PADES_SIGNATUREPACKING, null);
+                if (padesSignaturePacking != null) {
+                    System.out.println("Using Pades Signature Packing: " + padesSignaturePacking);
+                    transactionSignerBuilder.padESSignaturePacking(padesSignaturePacking);
+                }
+
+                String xadesSignatureLevel = getConfig(ENV_TS_XADES_SIGNATURELEVEL, null);
+                if (xadesSignatureLevel != null) {
+                    System.out.println("Using Xades Signature Level: " + xadesSignatureLevel);
+                    transactionSignerBuilder.xadESSignatureLevel(xadesSignatureLevel);
+                }
+
+                String xadesSignaturePacking = getConfig(ENV_TS_XADES_SIGNATUREPACKING, null);
+                if (xadesSignaturePacking != null) {
+                    System.out.println("Using Xades Signature Packing: " + xadesSignaturePacking);
+                    transactionSignerBuilder.xadESSignaturePacking(xadesSignaturePacking);
+                }
+
+                String xadesSignedInfoCanonicalizationMethod = getConfig(ENV_TS_XADES_SIGNEDINFO_CANONICALIZATION, null);
+                if (xadesSignedInfoCanonicalizationMethod != null) {
+                    System.out.println("Using Xades SignedInfo Canonicalization Method: " + xadesSignedInfoCanonicalizationMethod);
+                    transactionSignerBuilder.xadESSignedInfoCanonicalizationMethod(xadesSignedInfoCanonicalizationMethod);
+                }
+
+                String xadesSignedPropertiesCanonicalizationMethod = getConfig(ENV_TS_XADES_SIGNEDPROPERTIES_CANONICALIZATION, null);
+                if (xadesSignedPropertiesCanonicalizationMethod != null) {
+                    System.out.println("Using Xades SignedProperties Canonicalization Method: " + xadesSignedPropertiesCanonicalizationMethod);
+                    transactionSignerBuilder.xadESSignedPropertiesCanonicalizationMethod(xadesSignedPropertiesCanonicalizationMethod);
+                }
+
+                String xadesXPathLocation = getConfig(ENV_TS_XADES_XPATH_LOCATION, null);
+                if (xadesXPathLocation != null) {
+                    System.out.println("Using Xades XPath Location: " + xadesXPathLocation);
+                    transactionSignerBuilder.xadESXPathLocationString(xadesXPathLocation);
                 }
 
                 TransactionSigner signer = transactionSignerBuilder.build();
@@ -228,14 +301,14 @@ public class SignTool {
             } else if(command.equalsIgnoreCase(CMD_VERIFY)){
                 String trustStorePath = getConfig(ENV_TS_TRUSTSTORE, null);
                 String trustStorePassword = getConfig(ENV_TS_TRUSTSTORE_PASSWORD, null);
-                String trustStoreType = getConfig(ENV_TS_TRUSTSTORE_TYPE, null);
+                String trustStoreType = getConfig(ENV_TS_TRUSTSTORE_TYPE, "JKS");
 
                 // Build transaction validator instance to perform document validation
                 TransactionValidator.Builder transactionValidatorBuilder = new TransactionValidator.Builder();
 
                 if(trustStorePath != null && trustStorePassword != null){
                     System.out.println("Using validation truststore: " + trustStorePath);
-                    KeyStore validationTrustStore = KeyStore.getInstance(trustStoreType != null ? trustStoreType : "JKS");
+                    KeyStore validationTrustStore = KeyStore.getInstance(trustStoreType);
                     validationTrustStore.load(Files.newInputStream(Paths.get(trustStorePath)), trustStorePassword.toCharArray());
                     transactionValidatorBuilder.trustStore(validationTrustStore);
                 }
