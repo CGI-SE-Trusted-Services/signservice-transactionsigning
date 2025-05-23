@@ -11,6 +11,8 @@ Changes in preparation for moving to java 21 in Q4 2025.
 === Changes
 * Replaced old test library org.codehaus.groovy.modules.http-builder:http-builder with com.squareup.okhttp3:okhttp
 * Bump SLF4J to 2.0.17
+* Upgraded JSON In Java to 20250517.
+* Updated Spock Framework Core Module to 2.4-M6-groovy-3.0
 * Removed not related internal build logic from build.gradle.
 * Updated the Gradle Wrapper files(gradlew, gradlew.bat, gradle-wrapper.jar) to align with the configured Gradle version.
 * Upgrades in SignTool CLI: Now allows explicitly setting the signature algorithm to be used.
