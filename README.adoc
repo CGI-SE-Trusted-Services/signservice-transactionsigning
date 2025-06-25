@@ -42,7 +42,7 @@ The library can be used within a Gradle project by adding the following dependen
 
 [source]
 ----
-implementation 'se.signatureservice.support:signservice-transactionsigning:2503.1'
+implementation 'se.signatureservice.support:signservice-transactionsigning:2506.1'
 ----
 
 == Examples
