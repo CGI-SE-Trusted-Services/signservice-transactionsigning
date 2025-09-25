@@ -33,7 +33,7 @@ The library can be used within a maven project by adding the following dependenc
 <dependency>
     <groupId>se.signatureservice.support</groupId>
     <artifactId>signservice-transactionsigning</artifactId>
-    <version>2506.1</version>
+    <version>2509.1</version>
 </dependency>
 ----
 
@@ -42,7 +42,7 @@ The library can be used within a Gradle project by adding the following dependen
 
 [source]
 ----
-implementation 'se.signatureservice.support:signservice-transactionsigning:2506.1'
+implementation 'se.signatureservice.support:signservice-transactionsigning:2509.1'
 ----
 
 == Examples
