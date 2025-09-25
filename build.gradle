@@ -29,6 +29,9 @@ dependencies {
     implementation 'org.apache.httpcomponents.core5:httpcore5:5.3.4'
     implementation 'org.apache.httpcomponents.core5:httpcore5-h2:5.3.4'
 
+    // To fix vulnerability CVE-2025-48924
+    implementation 'org.apache.commons:commons-lang3:3.18.0'
+
     testImplementation platform("org.spockframework:spock-bom:2.4-M6-groovy-3.0")
     testImplementation "org.spockframework:spock-core"
 }
