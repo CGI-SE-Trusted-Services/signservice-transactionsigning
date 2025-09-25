@@ -3,6 +3,17 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
+== Version 2509.1
+
+=== Upgrade notes
+This release contains no breaking changes.
+
+=== Changes
+
+* Upgraded Gradle to `7.6.6`
+* Vulnerability CVE-2025-48924 fixed via:
+** commons-lang3: upgraded to 3.18.0
+
 == Version 2506.1
 
 === Upgrade notes
