@@ -1,7 +1,7 @@
 plugins {
     id("groovy")
     id("java-library")
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.gradleup.shadow") version "9.2.2"
 }
 
 group = "se.signatureservice.support"
@@ -36,8 +36,17 @@ dependencies {
     implementation "org.slf4j:slf4j-api:2.0.17"
     implementation "org.slf4j:slf4j-simple:2.0.17"
     implementation "org.json:json:20250517"
+    implementation "org.apache.groovy:groovy:${groovyVersion}"
 
-    testImplementation platform("org.spockframework:spock-bom:2.4-groovy-3.0")
+    // To fix vulnerability CVE-2025-27820 derived from eu.europa.ec.joinup.sd-dss:dss-service
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.5'
+    implementation 'org.apache.httpcomponents.core5:httpcore5:5.3.4'
+    implementation 'org.apache.httpcomponents.core5:httpcore5-h2:5.3.4'
+
+    // To fix vulnerability CVE-2025-48924
+    implementation 'org.apache.commons:commons-lang3:3.19.0'
+
+    testImplementation platform("org.spockframework:spock-bom:$spokVersion")
     testImplementation "org.spockframework:spock-core"
 }
 
@@ -49,7 +58,7 @@ shadowJar {
     archiveBaseName = 'signservice-transactionsigning'
     mergeServiceFiles()
     archiveClassifier = ''
-    exclude 'META-INF/versions/21/**'
+    //exclude 'META-INF/versions/21/**'
     dependencies {
         exclude(dependency("org.slf4j:slf4j-simple:2.0.17"))
     }
