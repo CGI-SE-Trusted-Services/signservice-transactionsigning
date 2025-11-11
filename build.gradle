@@ -36,7 +36,7 @@ dependencies {
     implementation "org.slf4j:slf4j-api:2.0.17"
     implementation "org.slf4j:slf4j-simple:2.0.17"
     implementation "org.json:json:20250517"
-    implementation 'org.apache.groovy:groovy:4.0.26'
+    implementation 'org.apache.groovy:groovy:4.0.29'
 
     // To fix vulnerability CVE-2025-27820 derived from eu.europa.ec.joinup.sd-dss:dss-service
     implementation 'org.apache.httpcomponents.client5:httpclient5:5.5'
