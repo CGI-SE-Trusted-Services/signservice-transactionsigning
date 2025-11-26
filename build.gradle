@@ -1,0 +1,61 @@
+plugins {
+    id("groovy")
+    id("java-library")
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+}
+
+group = "se.signatureservice.support"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "eu.europa.ec.joinup.sd-dss:dss-xades:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-cades:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-pades:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-service:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-utils:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-utils-apache-commons:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-crl-parser-x509crl:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-validation:${dssVersion}"
+    implementation "eu.europa.ec.joinup.sd-dss:dss-pades-pdfbox:${dssVersion}"
+    implementation "org.slf4j:slf4j-api:2.0.17"
+    implementation "org.slf4j:slf4j-simple:2.0.17"
+    implementation "org.json:json:20250517"
+
+    // To fix vulnerability CVE-2025-27820 derived from eu.europa.ec.joinup.sd-dss:dss-service
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.5'
+    implementation 'org.apache.httpcomponents.core5:httpcore5:5.3.4'
+    implementation 'org.apache.httpcomponents.core5:httpcore5-h2:5.3.4'
+
+    // To fix vulnerability CVE-2025-48924
+    implementation 'org.apache.commons:commons-lang3:3.18.0'
+
+    testImplementation platform("org.spockframework:spock-bom:2.4-M6-groovy-3.0")
+    testImplementation "org.spockframework:spock-core"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    archiveBaseName = 'signservice-transactionsigning'
+    mergeServiceFiles()
+    archiveClassifier = ''
+    exclude 'META-INF/versions/21/**'
+    dependencies {
+        exclude(dependency("org.slf4j:slf4j-simple:2.0.17"))
+    }
+    relocate 'org.apache', 'signservice.org.apache'
+    relocate 'org.json', 'signservice.org.json'
+    relocate 'com.ctc', 'signservice.com.ctc'
+    relocate 'org.bouncycastle', 'signservice.org.bouncycastle'
+    relocate 'org.codehaus', 'signservice.org.codehaus'
+}
+
+tasks.build.dependsOn tasks.shadowJar
+if(tasks.findByName("zipBin") && tasks.findByName("shadowJar")) {
+    tasks.zipBin.dependsOn tasks.shadowJar
+}
