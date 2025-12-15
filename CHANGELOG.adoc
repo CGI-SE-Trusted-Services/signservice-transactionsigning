@@ -3,12 +3,15 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
-== Version 2511.1
+== Version 2512.1
 
 === Enhancements
 
 * The eu.europa.ec.joinup.sd-dss library upgraded to version 6.3.
 * Default validation policy file that comes with this library updated to match the new eu.europa.ec.joinup.sd-dss version.
+* Removed temporary security-related dependency overrides, as they are no longer required.
+* Dependency upgrades:
+** `org.spockframework:spock-bom` to `2.4-groovy-3.0`
 
 == Version 2509.1
 

@@ -6,6 +6,19 @@ plugins {
 
 group = "se.signatureservice.support"
 
+pluginManager.withPlugin('org.certificateservices.gradle.certservice-gradle-plugin') {
+    certserviceSettings {
+        licenseName = "GNU Lesser General Public License v3.0 or later"
+        licenseURL = "https://www.gnu.org/licenses/lgpl-3.0-standalone.html"
+        useDeveloperPOM = true
+        useScmPOM = true
+        scmConnection = "scm:git:https://github.com/CGI-SE-Trusted-Services/signservice-transactionsigning.git"
+        scmDeveloperConnection = "scm:git:https://git@github.com/CGI-SE-Trusted-Services/signservice-transactionsigning.git"
+        scmUrl = "https://github.com/CGI-SE-Trusted-Services/signservice-transactionsigning"
+        projectUrl = "https://github.com/CGI-SE-Trusted-Services/signservice-transactionsigning"
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -24,15 +37,7 @@ dependencies {
     implementation "org.slf4j:slf4j-simple:2.0.17"
     implementation "org.json:json:20250517"
 
-    // To fix vulnerability CVE-2025-27820 derived from eu.europa.ec.joinup.sd-dss:dss-service
-    implementation 'org.apache.httpcomponents.client5:httpclient5:5.5'
-    implementation 'org.apache.httpcomponents.core5:httpcore5:5.3.4'
-    implementation 'org.apache.httpcomponents.core5:httpcore5-h2:5.3.4'
-
-    // To fix vulnerability CVE-2025-48924
-    implementation 'org.apache.commons:commons-lang3:3.18.0'
-
-    testImplementation platform("org.spockframework:spock-bom:2.4-M6-groovy-3.0")
+    testImplementation platform("org.spockframework:spock-bom:2.4-groovy-3.0")
     testImplementation "org.spockframework:spock-core"
 }
 
