@@ -10,7 +10,7 @@ tasks.register('zipBin', Zip) {
         into(projectBaseName)
     }
     from('build/libs/') {
-        fileMode = 0755
+        filePermissions { unix(0755) }
         include(projectBaseName + ".jar")
         into(projectBaseName)
     }
