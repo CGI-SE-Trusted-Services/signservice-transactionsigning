@@ -3,6 +3,12 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
+== Version 2601.2
+
+=== Changes
+
+* Added runtime dependency eu.europa.ec.joinup.sd-dss:dss-cms-object to project.
+
 == Version 2601.1
 
 === Upgrade notes
