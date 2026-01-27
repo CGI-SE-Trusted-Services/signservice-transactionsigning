@@ -36,16 +36,20 @@ final public class TransactionSigner {
     private final static Logger log = LoggerFactory.getLogger(TransactionSigner.class);
     private final SupportService supportService;
     private final SignService signService;
-    private SignerConfig config;
+    private final SignerConfig config;
 
     private TransactionSigner(SignerConfig config) throws InvalidConfigurationException {
+        this(config, ServiceManager.getSupportService(), ServiceManager.getSignService());
+    }
+
+    private TransactionSigner(SignerConfig config, SupportService supportService, SignService signService) throws InvalidConfigurationException {
         this.config = config;
 
-        supportService = ServiceManager.getSupportService();
         supportService.init(config);
+        this.supportService = supportService;
 
-        signService = ServiceManager.getSignService();
         signService.init(config);
+        this.signService = signService;
     }
 
     /**
@@ -383,6 +387,16 @@ final public class TransactionSigner {
          */
         public TransactionSigner build() throws InvalidConfigurationException {
             return new TransactionSigner(config);
+        }
+
+        /**
+         * Build a transaction signer that does not share any services with other instances.
+         *
+         * @return TransactionSigner instance based on builder settings.
+         * @throws InvalidConfigurationException If an error occurred when building transaction signer
+         */
+        public TransactionSigner buildIsolatedInstance() throws InvalidConfigurationException {
+            return new TransactionSigner(config, ServiceManager.newSupportService(), ServiceManager.newSignService());
         }
     }
 }

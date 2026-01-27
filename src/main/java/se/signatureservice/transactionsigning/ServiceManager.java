@@ -31,12 +31,12 @@ public class ServiceManager {
     private final static String DEFAULT_SUPPORTSERVICE_IMPLEMENTATION = "se.signatureservice.transactionsigning.supportservice.DefaultSupportService";
     private final static String DEFAULT_VALIDATIONSERVICE_IMPLEMENTATION = "se.signatureservice.transactionsigning.validationservice.DefaultValidationService";
 
-    private static SupportService supportService;
-    private static SignService signService;
-    private static ValidationService validationService;
+    private static SupportService sharedSupportServiceInstance;
+    private static SignService sharedSignServiceInstance;
+    private static ValidationService sharedValidationServiceInstance;
 
     /**
-     * Get default support service implementation.
+     * Get a shared instance of support service.
      *
      * @return Instance of default support service implementation.
      */
@@ -45,57 +45,96 @@ public class ServiceManager {
     }
 
     /**
-     * Get instance of support service based on given parameter
+     * Get a shared instance of support service, create if necessary based on given parameter
      *
      * @param serviceImplementation Classpath of support service implementation to use or null to use the default.
      * @return Instance of support service to use
      */
     public static SupportService getSupportService(String serviceImplementation) {
-        if(supportService == null) {
+        if(sharedSupportServiceInstance == null) {
             String supportServiceImpl = serviceImplementation != null ? serviceImplementation : DEFAULT_SUPPORTSERVICE_IMPLEMENTATION;
-            try {
-                Class<?> c = ServiceManager.class.getClassLoader().loadClass(supportServiceImpl);
-                Object o = c.getDeclaredConstructor().newInstance();
-                supportService = (SupportService)o;
-            } catch (Exception e) {
-                log.error("Failed to create support service", e);
-            }
+            sharedSupportServiceInstance = newSupportService(supportServiceImpl);
         }
-        return supportService;
+        return sharedSupportServiceInstance;
     }
 
     /**
-     * Get default support sign service implementation.
+     * Get a new SupportService instance, default implementation.
      *
      * @return Instance of default support service implementation.
+     */
+    public static SupportService newSupportService() {
+        return newSupportService(DEFAULT_SUPPORTSERVICE_IMPLEMENTATION);
+    }
+
+    /**
+     * Get a new SupportService instance, based on given parameter
+     *
+     * @param serviceImplementation Classpath of support service implementation to use.
+     * @return Instance of support service to use
+     */
+    public static SupportService newSupportService(String serviceImplementation) {
+        try {
+            Class<?> c = ServiceManager.class.getClassLoader().loadClass(serviceImplementation);
+            Object o = c.getDeclaredConstructor().newInstance();
+            return (SupportService) o;
+        } catch (Exception e) {
+            log.error("Failed to create support service", e);
+            return null;
+        }
+    }
+
+    /**
+     * Get a shared instance of sign service.
+     *
+     * @return Instance of default sign service implementation.
      */
     public static SignService getSignService() {
         return getSignService(null);
     }
 
     /**
-     * Get instance of sign service based on application
-     * configuration.
+     * Get a shared instance of sign service, create if necessary based on given parameter
      *
      * @param serviceImplementation Classpath of sign service implementation to use or null to use the default.
      * @return Instance of sign service to use
      */
     public static SignService getSignService(String serviceImplementation) {
-        if(signService == null) {
+        if(sharedSignServiceInstance == null) {
             String signServiceImpl = serviceImplementation != null ? serviceImplementation : DEFAULT_SIGNSERVICE_IMPLEMENTATION;
-            try {
-                Class<?> c = ServiceManager.class.getClassLoader().loadClass(signServiceImpl);
-                Object o = c.getDeclaredConstructor().newInstance();
-                signService = (SignService)o;
-            } catch (Exception e) {
-                log.error("Failed to create sign service", e);
-            }
+            sharedSignServiceInstance = newSignService(signServiceImpl);
         }
-        return signService;
+        return sharedSignServiceInstance;
     }
 
     /**
-     * Get default validation service implementation.
+     * Get a new SignService instance, default implementation.
+     *
+     * @return Instance of default sign service implementation.
+     */
+    public static SignService newSignService() {
+        return newSignService(DEFAULT_SIGNSERVICE_IMPLEMENTATION);
+    }
+
+    /**
+     * Get a new SignService instance, based on given parameter
+     *
+     * @param serviceImplementation Classpath of sign service implementation to use.
+     * @return Instance of sign service to use
+     */
+    private static SignService newSignService(String serviceImplementation) {
+        try {
+            Class<?> c = ServiceManager.class.getClassLoader().loadClass(serviceImplementation);
+            Object o = c.getDeclaredConstructor().newInstance();
+            return (SignService) o;
+        } catch (Exception e) {
+            log.error("Failed to create sign service", e);
+            return null;
+        }
+    }
+
+    /**
+     * Get a shared instance of validation service.
      *
      * @return Instance of default validation service implementation.
      */
@@ -104,23 +143,42 @@ public class ServiceManager {
     }
 
     /**
-     * Get instance of validation service based on application
-     * configuration.
+     * Get a shared instance of validation service, create if necessary based on given parameter
      *
      * @param serviceImplementation Classpath of validation service implementation to use or null to use the default.
-     * @return Instance of sign service to use
+     * @return Instance of validation service to use
      */
     public static ValidationService getValidationService(String serviceImplementation) {
-        if(validationService == null) {
+        if(sharedValidationServiceInstance == null) {
             String validationServiceImpl = serviceImplementation != null ? serviceImplementation : DEFAULT_VALIDATIONSERVICE_IMPLEMENTATION;
-            try {
-                Class<?> c = ServiceManager.class.getClassLoader().loadClass(validationServiceImpl);
-                Object o = c.getDeclaredConstructor().newInstance();
-                validationService = (ValidationService)o;
-            } catch (Exception e) {
-                log.error("Failed to create validation service", e);
-            }
+            sharedValidationServiceInstance = newValidationService(validationServiceImpl);
         }
-        return validationService;
+        return sharedValidationServiceInstance;
+    }
+
+    /**
+     * Get a new ValidationService instance, default implementation.
+     *
+     * @return Instance of default validation service implementation.
+     */
+    public static ValidationService newValidationService() {
+        return newValidationService(DEFAULT_VALIDATIONSERVICE_IMPLEMENTATION);
+    }
+
+    /**
+     * Get a new ValidationService instance, based on given parameter
+     *
+     * @param serviceImplementation Classpath of validation service implementation to use.
+     * @return Instance of validation service to use
+     */
+    public static ValidationService newValidationService(String serviceImplementation) {
+        try {
+            Class<?> c = ServiceManager.class.getClassLoader().loadClass(serviceImplementation);
+            Object o = c.getDeclaredConstructor().newInstance();
+            return (ValidationService) o;
+        } catch (Exception e) {
+            log.error("Failed to create validation service", e);
+            return null;
+        }
     }
 }
