@@ -36,15 +36,12 @@ final public class TransactionSigner {
     private final static Logger log = LoggerFactory.getLogger(TransactionSigner.class);
     private final SupportService supportService;
     private final SignService signService;
-    private final SignerConfig config;
 
     private TransactionSigner(SignerConfig config) throws InvalidConfigurationException {
         this(config, ServiceManager.getSupportService(), ServiceManager.getSignService());
     }
 
     private TransactionSigner(SignerConfig config, SupportService supportService, SignService signService) throws InvalidConfigurationException {
-        this.config = config;
-
         supportService.init(config);
         this.supportService = supportService;
 
