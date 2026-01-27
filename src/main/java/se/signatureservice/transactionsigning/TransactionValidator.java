@@ -34,15 +34,12 @@ final public class TransactionValidator {
     private final static Logger log = LoggerFactory.getLogger(TransactionValidator.class);
 
     private final ValidationService validationService;
-    private final ValidatorConfig config;
 
     private TransactionValidator(ValidatorConfig config) throws InvalidConfigurationException {
         this(config, ServiceManager.getValidationService());
     }
 
     private TransactionValidator(ValidatorConfig config, ValidationService validationService) throws InvalidConfigurationException {
-        this.config = config;
-
         validationService.init(config);
         this.validationService = validationService;
     }
