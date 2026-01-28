@@ -95,6 +95,20 @@ It is also possible to specify keystore and/or truststore using a path that is a
         .keyId("testKey")
         .build();
 
+==== Multiple TransactionSigner instances [[signer]]
+
+It is quite possible to create several TransactionSigner instances. However, when using the
+above recipe, the separate instances will share configuration, making it less useful. This is the legacy behavior.
+
+In order to have several TransactionSigner instances with separate configurations, in the same java process,
+the instances have to be created using the 'buildIsolatedInstance' method, instead of the regular 'build' method.
+
+For example
+
+    TransactionSigner signer = new TransactionSigner.Builder()
+        .apiEndpoint("http://192.168.99.21:8080/lcso/signRequest/rest/v1")
+        .buildIsolatedInstance();
+
 === Sign Document
 Document can then be signed as shown in the following example.
 
@@ -121,6 +135,17 @@ NOTE: `loadExternalTrustStore` in this example needs to be implemented by the re
     TransactionValidator validator = new TransactionValidator.Builder()
         .trustStore(trustStore)
         .build();
+
+==== Multiple TransactionValidator instances [[validator]]
+
+Just like with TransactionSigner, separate instances of TransactionValidator will share configuration, unless
+the 'buildIsolatedInstance' method is used, instead of the regular 'build' method.
+
+For example
+
+    TransactionValidator validator = new TransactionValidator.Builder()
+        .trustStore("/path/to/truststore.jks", "changeit", "JKS")
+        .buildIsolatedInstance();
 
 === Validate Document
 A signed document can then be validated as shown in the following example.
