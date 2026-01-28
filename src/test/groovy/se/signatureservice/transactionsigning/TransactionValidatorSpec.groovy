@@ -33,7 +33,7 @@ class TransactionValidatorSpec extends Specification {
 
         then:
         validator != null
-        validator.config.getTrustStore() != null
+        (validator.validationService as DefaultValidationService).config.getTrustStore() != null
         CommonCertificateVerifier certificateVerifier = ((DefaultValidationService)validator.validationService).getCertificateVerifier() as CommonCertificateVerifier
         certificateVerifier != null
         certificateVerifier.getTrustedCertSources().numberOfCertificates == 13
@@ -46,9 +46,66 @@ class TransactionValidatorSpec extends Specification {
                 .build()
         then:
         validator != null
-        validator.config.getTrustStore() != null
+        (validator.validationService as DefaultValidationService).config.getTrustStore() != null
         CommonCertificateVerifier certificateVerifier = ((DefaultValidationService)validator.validationService).getCertificateVerifier() as CommonCertificateVerifier
         certificateVerifier != null
         certificateVerifier.getTrustedCertSources().numberOfCertificates == 13
+    }
+
+    def "test overriding earlier config when using shared service instances"(){
+        when:
+        TransactionValidator validator1 = new TransactionValidator.Builder()
+                .trustStore("src/test/resources/validation-truststore.jks", "foo123", "JKS")
+                .customValidationPolicy("A-policy")
+                .build()
+        then:
+        validator1 != null
+        (validator1.validationService as DefaultValidationService).config.policyName == "A-policy"
+
+        when:
+        TransactionValidator validator2 = new TransactionValidator.Builder()
+                .trustStore("src/test/resources/validation-truststore.jks", "foo123", "JKS")
+                .customValidationPolicy("B-policy")
+                .build()
+        then:
+        validator2 != null
+        (validator2.validationService as DefaultValidationService).config.policyName == "B-policy"
+        (validator1.validationService as DefaultValidationService).config.policyName == "B-policy"
+        validator1.validationService == validator2.validationService
+    }
+
+    def "test keeping config separate when using isolated service instances"() {
+        when:
+        TransactionValidator validator1 = new TransactionValidator.Builder()
+                .trustStore("src/test/resources/validation-truststore.jks", "foo123", "JKS")
+                .customValidationPolicy("A-policy")
+                .buildIsolatedInstance()
+        then:
+        validator1 != null
+        (validator1.validationService as DefaultValidationService).config.policyName == "A-policy"
+
+        when:
+        TransactionValidator validator2 = new TransactionValidator.Builder()
+                .trustStore("src/test/resources/validation-truststore.jks", "foo123", "JKS")
+                .customValidationPolicy("B-policy")
+                .buildIsolatedInstance()
+        then:
+        validator2 != null
+        (validator2.validationService as DefaultValidationService).config.policyName == "B-policy"
+        (validator1.validationService as DefaultValidationService).config.policyName == "A-policy"
+        validator1.validationService != validator2.validationService
+
+        when:
+        TransactionValidator validator3 = new TransactionValidator.Builder()
+                .trustStore("src/test/resources/validation-truststore.jks", "foo123", "JKS")
+                .customValidationPolicy("C-policy")
+                .build()
+        then:
+        validator3 != null
+        (validator3.validationService as DefaultValidationService).config.policyName == "C-policy"
+        (validator2.validationService as DefaultValidationService).config.policyName == "B-policy"
+        (validator1.validationService as DefaultValidationService).config.policyName == "A-policy"
+        validator1.validationService != validator3.validationService
+        validator2.validationService != validator3.validationService
     }
 }

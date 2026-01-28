@@ -33,14 +33,15 @@ import java.util.List;
 final public class TransactionValidator {
     private final static Logger log = LoggerFactory.getLogger(TransactionValidator.class);
 
-    private ValidationService validationService;
-    private ValidatorConfig config;
+    private final ValidationService validationService;
 
     private TransactionValidator(ValidatorConfig config) throws InvalidConfigurationException {
-        this.config = config;
+        this(config, ServiceManager.getValidationService());
+    }
 
-        validationService = ServiceManager.getValidationService();
+    private TransactionValidator(ValidatorConfig config, ValidationService validationService) throws InvalidConfigurationException {
         validationService.init(config);
+        this.validationService = validationService;
     }
 
     /**
@@ -160,6 +161,16 @@ final public class TransactionValidator {
          */
         public TransactionValidator build() throws InvalidConfigurationException {
             return new TransactionValidator(config);
+        }
+
+        /**
+         * Build a transaction signer that does not share any services with other instances.
+         *
+         * @return TransactionSigner instance based on builder settings.
+         * @throws InvalidConfigurationException If an error occurred when building transaction signer
+         */
+        public TransactionValidator buildIsolatedInstance() throws InvalidConfigurationException {
+            return new TransactionValidator(config, ServiceManager.newValidationService());
         }
     }
 }

@@ -8,9 +8,15 @@ of the Signature Service Transaction Signing Library.
 === Upgrade notes
 The project now targets Java 21.
 
+=== Enhancements
+
+* It is now possible to create separately configured TransactionSigner and TransactionValidator instances, see
+<<README.adoc#signer,here>>, and <<README.adoc#validator,here>>.
+
 === Changes
 
 * Upgraded Gradle to 8.14.3.
+* Added runtime dependency eu.europa.ec.joinup.sd-dss:dss-cms-object to project.
 
 == Version 2512.1
 
