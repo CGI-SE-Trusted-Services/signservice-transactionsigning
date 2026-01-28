@@ -5,6 +5,11 @@ of the Signature Service Transaction Signing Library.
 
 == Version 2601.2
 
+=== Enhancements
+
+* It is now possible to create separately configured TransactionSigner and TransactionValidator instances, see
+<<README.adoc#signer,here>>, and <<README.adoc#validator,here>>.
+
 === Changes
 
 * Added runtime dependency eu.europa.ec.joinup.sd-dss:dss-cms-object to project.
