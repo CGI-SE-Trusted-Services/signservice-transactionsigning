@@ -3,7 +3,10 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
-== Version 2601.2
+== Version 2601.1
+
+=== Upgrade notes
+The project now targets Java 21.
 
 === Enhancements
 
@@ -12,16 +15,8 @@ of the Signature Service Transaction Signing Library.
 
 === Changes
 
-* Added runtime dependency eu.europa.ec.joinup.sd-dss:dss-cms-object to project.
-
-== Version 2601.1
-
-=== Upgrade notes
-The project now targets Java 21.
-
-=== Changes
-
 * Upgraded Gradle to 8.14.3.
+* Added runtime dependency eu.europa.ec.joinup.sd-dss:dss-cms-object to project.
 
 == Version 2512.1
 
