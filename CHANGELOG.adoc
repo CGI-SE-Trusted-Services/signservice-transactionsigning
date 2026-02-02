@@ -3,6 +3,13 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
+== Version 2602.1
+
+=== Changes
+
+* Edited bundled validation policy, removing the iIDAS tag.
+* Added a few more eu.europa.ec.joinup.sd-dss runtime dependencies.
+
 == Version 2601.1
 
 === Upgrade notes
