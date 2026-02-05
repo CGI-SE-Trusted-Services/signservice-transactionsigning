@@ -9,6 +9,7 @@ of the Signature Service Transaction Signing Library.
 
 * Edited bundled validation policy, removing the iIDAS tag.
 * Added a few more eu.europa.ec.joinup.sd-dss runtime dependencies.
+* Unnecessary dependencies removed.
 
 == Version 2601.1
 
