@@ -192,7 +192,10 @@ public class DefaultSupportService implements SupportService {
 
                 DSSDocument dssDocument = DSSUtils.createDSSDocument(document);
                 AbstractSignatureParameters dssParameters = getSignatureParameters(document.getMimeType());
-                dssParameters.bLevel().setSigningDate(pendingSignature.getSigningDate());
+
+                // Try getting the signing date from the remote signing server.
+                Date signingDate = SignTaskUtils.getXadesSigningTime(adesObject);
+                dssParameters.bLevel().setSigningDate(signingDate != null ? signingDate : pendingSignature.getSigningDate());
                 var exactEncryptionAlgo = dssParameters.getEncryptionAlgorithm();
                 dssParameters.setSigningCertificate(signatureToken);
 
