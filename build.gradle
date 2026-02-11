@@ -50,8 +50,9 @@ dependencies {
     // To fix vulnerability CVE-2025-48924
     implementation 'org.apache.commons:commons-lang3:3.20.0'
 
-    testImplementation platform("org.spockframework:spock-bom:$spokVersion")
+    testImplementation platform("org.spockframework:spock-bom:$spockVersion")
     testImplementation "org.spockframework:spock-core"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 test {
