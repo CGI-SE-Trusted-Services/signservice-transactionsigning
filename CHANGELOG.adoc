@@ -3,6 +3,13 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
+== Version 2602.2
+
+=== Changes
+
+* Use the signing date from the remote-sign server, to calculate reference id:s
+based on the same data as the remote-sign server.
+
 == Version 2602.1
 
 === Changes
