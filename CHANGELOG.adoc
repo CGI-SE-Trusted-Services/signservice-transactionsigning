@@ -3,6 +3,15 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
+== Version 2602.2
+
+=== Changes
+
+* Upgraded Gradle to 9.3.1.
+* Upgraded Spock to 2.4.
+* Use the signing date from the remote-sign server, to calculate reference id:s
+based on the same data as the remote-sign server.
+
 == Version 2602.1
 
 === Changes
