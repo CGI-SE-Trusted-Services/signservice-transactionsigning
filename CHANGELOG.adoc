@@ -7,6 +7,8 @@ of the Signature Service Transaction Signing Library.
 
 === Changes
 
+* Upgraded Gradle to 9.3.1.
+* Upgraded Spock to 2.4.
 * Use the signing date from the remote-sign server, to calculate reference id:s
 based on the same data as the remote-sign server.
 
@@ -14,8 +16,6 @@ based on the same data as the remote-sign server.
 
 === Changes
 
-* Upgraded Gradle to 9.3.1.
-* Upgraded Spock to 2.4.
 * Edited bundled validation policy, removing the iIDAS tag.
 * Added a few more eu.europa.ec.joinup.sd-dss runtime dependencies.
 * Unnecessary dependencies removed.
