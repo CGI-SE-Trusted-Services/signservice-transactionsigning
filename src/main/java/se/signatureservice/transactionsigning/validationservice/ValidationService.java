@@ -41,4 +41,15 @@ public interface ValidationService {
      * @throws InvalidParameterException If an error occurred due an invalid input parameters.
      */
     void validateDocuments(List<SignedDocument> documents) throws ValidationException, ValidationIOException, InvalidParameterException;
+
+    /**
+     * Validate signed documents.
+     *
+     * @param documents List of documents to validate
+     * @param originalDocuments List of original documents, for validation of detached signatures.
+     * @throws ValidationException If any of the documents contains an invalid signature.
+     * @throws ValidationIOException If an intermittent I/O error occurred when validating the signature.
+     * @throws InvalidParameterException If an error occurred due an invalid input parameters.
+     */
+    void validateDocuments(List<SignedDocument> documents, List<Document> originalDocuments) throws ValidationException, ValidationIOException, InvalidParameterException;
 }
