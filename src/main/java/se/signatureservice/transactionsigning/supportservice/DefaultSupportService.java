@@ -116,11 +116,17 @@ public class DefaultSupportService implements SupportService {
             Integer signTaskId = i + 1;
             String adesType = AdESType.fromMimeType(document.getMimeType());
 
+            var dssParameters = getSignatureParameters(document.getMimeType());
+            if (dssParameters instanceof PAdESSignatureParameters) {
+                // add the PdfSignatureCache object, in order to use the same instance later on when signing
+                pendingSignature.addPdfSignatureCache(signTaskId, ((PAdESSignatureParameters) dssParameters).getPdfSignatureCache());
+            }
+
             JSONObject task = new JSONObject()
                     .put("signTaskId", String.valueOf(signTaskId))
                     .put("signType", config.getSignType())
                     .put("keyId", config.getKeyId())
-                    .put("signRequestData", generateToBeSigned(document, pendingSignature.getSigningDate(), requestId))
+                    .put("signRequestData", generateToBeSigned(document, pendingSignature.getSigningDate(), requestId, dssParameters))
                     .put("attributes", new JSONObject().put("ades.type", adesType));
 
             signRequestTasks.add(task);
@@ -191,7 +197,10 @@ public class DefaultSupportService implements SupportService {
                 }
 
                 DSSDocument dssDocument = DSSUtils.createDSSDocument(document);
-                AbstractSignatureParameters dssParameters = getSignatureParameters(document.getMimeType());
+                var dssParameters = getSignatureParameters(document.getMimeType());
+                if (dssParameters instanceof PAdESSignatureParameters) {
+                    ((PAdESSignatureParameters) dssParameters).getContext().setPdfToBeSignedCache(pendingSignature.getPdfSignatureCache(signTaskId));
+                }
 
                 // Try getting the signing date from the remote signing server.
                 Date signingDate = SignTaskUtils.getXadesSigningTime(adesObject);
@@ -270,10 +279,14 @@ public class DefaultSupportService implements SupportService {
         return certificates;
     }
 
-    private String generateToBeSigned(Document document, Date signingDate, String requestId) throws SignatureException {
+    private String generateToBeSigned(
+            final Document document,
+            final Date signingDate,
+            final String requestId,
+            final AbstractSignatureParameters dssParameters
+    ) throws SignatureException {
         try {
             DSSDocument dssDocument = DSSUtils.createDSSDocument(document);
-            AbstractSignatureParameters dssParameters = getSignatureParameters(document.getMimeType());
             dssParameters.setGenerateTBSWithoutCertificate(true);
             dssParameters.bLevel().setSigningDate(signingDate);
 
