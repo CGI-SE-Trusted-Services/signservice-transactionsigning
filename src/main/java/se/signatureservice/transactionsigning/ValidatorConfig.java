@@ -46,6 +46,11 @@ public class ValidatorConfig {
      */
     private boolean disableRevocation;
 
+    /**
+     * If the packaging is DETACHED.
+     */
+    private boolean detachedPackaging;
+
     public KeyStore getTrustStore() {
         return trustStore;
     }
@@ -76,5 +81,13 @@ public class ValidatorConfig {
 
     public void setDisableRevocation(boolean disableRevocation) {
         this.disableRevocation = disableRevocation;
+    }
+
+    public boolean isDetachedPackaging() {
+        return detachedPackaging;
+    }
+
+    public void setDetachedPackaging(boolean detachedPackaging) {
+        this.detachedPackaging = detachedPackaging;
     }
 }

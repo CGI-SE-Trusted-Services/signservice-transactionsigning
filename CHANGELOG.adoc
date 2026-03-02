@@ -3,6 +3,13 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
+== Version 2602.4
+
+=== Changes
+
+* Validation for detached packaging made possible.
+* Fix for pdf signing.
+
 == Version 2602.3
 
 == Version 2602.2

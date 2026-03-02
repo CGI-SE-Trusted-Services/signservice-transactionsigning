@@ -12,6 +12,8 @@
  *************************************************************************/
 package se.signatureservice.transactionsigning.common;
 
+import eu.europa.esig.dss.pdf.PdfSignatureCache;
+
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
@@ -24,11 +26,13 @@ import java.util.Map;
  */
 public class PendingSignature {
     private final Map<Integer, Document> documents;
+    private final Map<Integer, PdfSignatureCache> pdfSignatureCaches;
     private final Date signingDate;
 
     public PendingSignature(Date signingDate) {
         this.signingDate = signingDate;
         this.documents = new ConcurrentHashMap<>();
+        this.pdfSignatureCaches = new ConcurrentHashMap<>();
     }
 
     public Map<Integer, Document> getDocuments() {
@@ -41,5 +45,13 @@ public class PendingSignature {
 
     public Date getSigningDate() {
         return signingDate;
+    }
+
+    public void addPdfSignatureCache(Integer signTaskId, PdfSignatureCache dssParameters) {
+        pdfSignatureCaches.put(signTaskId, dssParameters);
+    }
+
+    public PdfSignatureCache getPdfSignatureCache(Integer signTaskId) {
+        return pdfSignatureCaches.get(signTaskId);
     }
 }

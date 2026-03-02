@@ -71,6 +71,34 @@ final public class TransactionValidator {
     }
 
     /**
+     * Validate a single signed document
+     *
+     * @param document Signed document to validate
+     * @param originalDocument Original documents, for validation of detached signature.
+     * @throws ValidationException If any of the documents contains an invalid signature.
+     * @throws ValidationIOException If an intermittent I/O error occurred when validating the signature.
+     * @throws InvalidParameterException If an error occurred due an invalid input parameters.
+     */
+    public void validateDocument(SignedDocument document, Document originalDocument) throws ValidationException, ValidationIOException, InvalidParameterException {
+        List<SignedDocument> documents = new ArrayList<>();
+        documents.add(document);
+        validateDocuments(documents, List.of(originalDocument));
+    }
+
+    /**
+     * Validate a list of signed documents
+     *
+     * @param documents List of signed documents
+     * @param originalDocuments List of original documents, for validation of detached signatures.
+     * @throws ValidationException If any of the documents contains an invalid signature.
+     * @throws ValidationIOException If an intermittent I/O error occurred when validating the signature.
+     * @throws InvalidParameterException If an error occurred due an invalid input parameters.
+     */
+    public void validateDocuments(List<SignedDocument> documents, List<Document> originalDocuments) throws ValidationException, ValidationIOException, InvalidParameterException {
+        validationService.validateDocuments(documents, originalDocuments);
+    }
+
+    /**
      * Builder class to use when building a TransactionValidator instance.
      */
     public static class Builder {
@@ -151,6 +179,16 @@ final public class TransactionValidator {
          */
         public Builder enableStrictValidation(){
             config.setStrictValidation(true);
+            return this;
+        }
+
+        /**
+         * Indicate to the Validator that the packaging is DETACHED.
+         *
+         * @return Updated builder
+         */
+        public Builder detachedPackaging(boolean detachedPackaging) {
+            config.setDetachedPackaging(detachedPackaging);
             return this;
         }
 

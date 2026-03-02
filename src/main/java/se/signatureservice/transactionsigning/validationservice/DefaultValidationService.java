@@ -32,10 +32,8 @@ import se.signatureservice.transactionsigning.util.DSSUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Standard implementation of service to validate documents
@@ -65,7 +63,6 @@ public class DefaultValidationService implements ValidationService {
         initialized = true;
     }
 
-
     /**
      * Validate signed documents.
      *
@@ -75,6 +72,20 @@ public class DefaultValidationService implements ValidationService {
      * @throws InvalidParameterException If an error occurred due an invalid input parameters.
      */
     public void validateDocuments(List<SignedDocument> documents) throws ValidationException, ValidationIOException, InvalidParameterException {
+        validateDocuments(documents, Collections.emptyList());
+    }
+
+
+    /**
+     * Validate signed documents.
+     *
+     * @param documents List of documents to validate
+     * @param originalDocuments List of original documents, for validation of detached signatures.
+     * @throws ValidationException If any of the documents contains an invalid signature.
+     * @throws ValidationIOException If an intermittent I/O error occurred when validating the signature.
+     * @throws InvalidParameterException If an error occurred due an invalid input parameters.
+     */
+    public void validateDocuments(List<SignedDocument> documents, List<Document> originalDocuments) throws ValidationException, ValidationIOException, InvalidParameterException {
         if(!initialized){
             throw new ValidationException("ValidationService must be initialized before calling validateDocuments");
         }
@@ -84,6 +95,13 @@ public class DefaultValidationService implements ValidationService {
             for (SignedDocument document : documents) {
                 DSSDocument dssDocument = DSSUtils.createDSSDocument(document);
                 SignedDocumentValidator validator = SignedDocumentValidator.fromDocument(dssDocument);
+                if (config.isDetachedPackaging()) {
+                    // we want the original documents to be supplied.
+                    if(documents.size() != originalDocuments.size()){
+                        throw new InvalidParameterException("If isDetachedPackaging is set, the list of original documents must be the same size as the list of signed documents.");
+                    }
+                    validator.setDetachedContents(originalDocuments.stream().map(DSSUtils::createDSSDocument).collect(Collectors.toList()));
+                }
                 validator.setCertificateVerifier(getCertificateVerifier());
                 Reports result = validator.validateDocument(policyResource);
 
