@@ -3,6 +3,8 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
+== Version 2603.1
+
 == Version 2602.4
 
 === Changes
