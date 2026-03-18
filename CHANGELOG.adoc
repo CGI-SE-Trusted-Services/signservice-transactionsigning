@@ -5,6 +5,11 @@ of the Signature Service Transaction Signing Library.
 
 == Version 2603.1
 
+=== Changes
+
+* Upgraded Grails to 7.0.9
+* PdfBox vulnerability CVE-2026-23907 suppressed.
+
 == Version 2602.4
 
 === Changes
