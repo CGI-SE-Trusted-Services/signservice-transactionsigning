@@ -29,7 +29,6 @@ import java.security.KeyStore
 @Ignore
 class RemoteSignIntegrationSpec extends Specification {
     static String endPoint = "http://localhost:8080/testorg/signRequest/rest/v1"
-    static String signType = "signTypeAdes"
     static String keyId = "keyId1"
     static String validationTrustStorePath = "src/test/resources/devca_truststore.jks"
     static String validationTrustStorePassword = "foo123"
@@ -43,7 +42,7 @@ class RemoteSignIntegrationSpec extends Specification {
     def cleanupSpec() {
     }
 
-    def "Sign and verify #signaturePacking, #documents"() {
+    def "Sign and verify #signaturePacking, #signType, #documents"() {
         when:
 
         TransactionSigner signer = new TransactionSigner.Builder()
@@ -78,21 +77,30 @@ class RemoteSignIntegrationSpec extends Specification {
         true
 
         where:
-        signaturePacking | documents
-        "ENVELOPED"      | [Documents.pdf()]
-        "ENVELOPING"     | [Documents.pdf()]
-        "DETACHED"       | [Documents.pdf()]
-        "ENVELOPED"      | [Documents.xml()]
-        "ENVELOPING"     | [Documents.xml()]
-        "DETACHED"       | [Documents.xml()]
-        "ENVELOPING"     | [Documents.doc()]
-        "DETACHED"       | [Documents.doc()]
-        "ENVELOPED"      | Documents.pdfs()
-        "ENVELOPING"     | Documents.xmls()
-        "DETACHED"       | Documents.docs()
-        "ENVELOPED"      | [Documents.pdf(), Documents.xml()]
-        "ENVELOPING"     | [Documents.xml(), Documents.doc()]
-        "DETACHED"       | [Documents.doc(), Documents.pdf()]
+        signaturePacking | signType                     | documents
+        "ENVELOPED"      | "signTypeAdes-NO_ROOT"       | [Documents.pdf()]
+        "ENVELOPING"     | "signTypeAdes-NO_ROOT"       | [Documents.pdf()]
+        "DETACHED"       | "signTypeAdes-NO_ROOT"       | [Documents.pdf()]
+        "ENVELOPED"      | "signTypeAdes-NO_ROOT"       | [Documents.xml()]
+        "ENVELOPING"     | "signTypeAdes-NO_ROOT"       | [Documents.xml()]
+        "DETACHED"       | "signTypeAdes-NO_ROOT"       | [Documents.xml()]
+        "ENVELOPING"     | "signTypeAdes-NO_ROOT"       | [Documents.doc()]
+        "DETACHED"       | "signTypeAdes-NO_ROOT"       | [Documents.doc()]
+        "ENVELOPED"      | "signTypeAdes-NO_ROOT"       | Documents.pdfs()
+        "ENVELOPING"     | "signTypeAdes-NO_ROOT"       | Documents.xmls()
+        "DETACHED"       | "signTypeAdes-NO_ROOT"       | Documents.docs()
+        "ENVELOPED"      | "signTypeAdes-NO_ROOT"       | [Documents.pdf(), Documents.xml()]
+        "ENVELOPING"     | "signTypeAdes-NO_ROOT"       | [Documents.xml(), Documents.doc()]
+        "DETACHED"       | "signTypeAdes-NO_ROOT"       | [Documents.doc(), Documents.pdf()]
+
+        "ENVELOPED"      | "signTypeAdes-ENTIRE_CHAIN"  | [Documents.xml()]
+        "ENVELOPING"     | "signTypeAdes-ENTIRE_CHAIN"  | [Documents.xml()]
+        "DETACHED"       | "signTypeAdes-ENTIRE_CHAIN"  | [Documents.xml()]
+        "ENVELOPING"     | "signTypeAdes-ENTIRE_CHAIN"  | [Documents.doc()]
+        "DETACHED"       | "signTypeAdes-ENTIRE_CHAIN"  | [Documents.doc()]
+        "ENVELOPING"     | "signTypeAdes-ENTIRE_CHAIN"  | Documents.xmls()
+        "DETACHED"       | "signTypeAdes-ENTIRE_CHAIN"  | Documents.docs()
+        "ENVELOPING"     | "signTypeAdes-ENTIRE_CHAIN"  | [Documents.xml(), Documents.doc()]
     }
 
     static class Documents {
