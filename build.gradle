@@ -57,7 +57,7 @@ shadowJar {
     archiveBaseName = 'signservice-transactionsigning'
     mergeServiceFiles()
     archiveClassifier = ''
-    exclude 'META-INF/versions/21/**'
+    exclude 'META-INF/versions/2*/**'
     dependencies {
         exclude(dependency("org.slf4j:slf4j-simple:2.0.17"))
     }
