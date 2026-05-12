@@ -3,6 +3,19 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
+== Version 2501.1
+
+=== Changes
+
+* Upgraded EU DSS lib to 6.4
+
+== Version 2603.1
+
+=== Changes
+
+* Upgraded Grails to 7.0.9
+* PdfBox vulnerability CVE-2026-23907 suppressed.
+
 == Version 2602.4
 
 === Changes
