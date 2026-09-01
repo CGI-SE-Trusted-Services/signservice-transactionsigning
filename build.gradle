@@ -43,9 +43,9 @@ dependencies {
     implementation "org.apache.groovy:groovy:${groovyVersion}"
 
     // To fix vulnerability CVE-2025-27820 derived from eu.europa.ec.joinup.sd-dss:dss-service
-    implementation 'org.apache.httpcomponents.client5:httpclient5:5.5'
-    implementation 'org.apache.httpcomponents.core5:httpcore5:5.3.4'
-    implementation 'org.apache.httpcomponents.core5:httpcore5-h2:5.3.4'
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.6.4'
+    implementation 'org.apache.httpcomponents.core5:httpcore5:5.4.3'
+    implementation 'org.apache.httpcomponents.core5:httpcore5-h2:5.4.3'
 
     // To fix vulnerability CVE-2025-48924
     implementation 'org.apache.commons:commons-lang3:3.20.0'
