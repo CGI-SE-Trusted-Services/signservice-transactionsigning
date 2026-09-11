@@ -5,6 +5,8 @@ of the Signature Service Transaction Signing Library.
 
 == Version 2609.2
 
+* Avoid bundling Groovy runtime
+
 == Version 2501.1
 
 === Changes
