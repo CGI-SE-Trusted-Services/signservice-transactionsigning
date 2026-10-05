@@ -1,0 +1,22 @@
+tasks.register('zipDist', Zip) {
+    def projectBaseName = project.name + "-${project.ext.get('shortVersionNumber')}"
+    def folderName = projectBaseName + '-dist'
+    archiveFileName = folderName + '.zip'
+
+    from(projectDir) {
+        include('README.adoc')
+        include('CHANGELOG.adoc')
+        include('THIRD-PARTY-NOTICES')
+        include('LICENSE')
+        into(folderName)
+    }
+    from(tasks.jar) {
+        into("${folderName}/lib")
+    }
+    from(configurations.runtimeClasspath) {
+        into("${folderName}/lib")
+    }
+    from('build/docs/html5') {
+        into(folderName + "/docs")
+    }
+}

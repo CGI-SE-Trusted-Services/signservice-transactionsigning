@@ -58,11 +58,14 @@ test {
     useJUnitPlatform()
 }
 
+jar {
+    archiveClassifier = 'thin'
+}
+
 shadowJar {
     archiveBaseName = 'signservice-transactionsigning'
     mergeServiceFiles()
     archiveClassifier = ''
-    //exclude 'META-INF/versions/21/**'
     dependencies {
         exclude(dependency("org.slf4j:slf4j-simple:2.0.17"))
     }
@@ -74,6 +77,13 @@ shadowJar {
 }
 
 tasks.build.dependsOn tasks.shadowJar
+
+apply from: 'zip-dist.gradle'
+if(tasks.findByName("zipDist")) {
+    tasks.build.dependsOn tasks.zipDist
+    tasks.zipDist.dependsOn tasks.doc
+}
+
 if(tasks.findByName("zipBin") && tasks.findByName("shadowJar")) {
     tasks.zipBin.dependsOn tasks.shadowJar
 }
