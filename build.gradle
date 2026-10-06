@@ -78,11 +78,24 @@ shadowJar {
 
 tasks.build.dependsOn tasks.shadowJar
 
-apply from: 'zip-dist.gradle'
-if(tasks.findByName("zipDist")) {
-    tasks.build.dependsOn tasks.zipDist
-    tasks.zipDist.dependsOn tasks.doc
+tasks.register('zipDist', Zip) {
+    def folderName = "${project.name}-${project.version}-dist"
+    archiveFileName = "${folderName}.zip"
+
+    from(projectDir) {
+        include('THIRD-PARTY-NOTICES')
+        include('LICENSE')
+        into(folderName)
+    }
+    from(tasks.jar) {
+        into("${folderName}/lib")
+    }
+    from(configurations.runtimeClasspath) {
+        into("${folderName}/lib")
+    }
 }
+
+tasks.build.dependsOn tasks.zipDist
 
 if(tasks.findByName("zipBin") && tasks.findByName("shadowJar")) {
     tasks.zipBin.dependsOn tasks.shadowJar
