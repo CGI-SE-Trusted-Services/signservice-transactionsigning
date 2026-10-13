@@ -1,0 +1,194 @@
+= Changelog
+
+This document provides information about changes that have been made for each new version
+of the Signature Service Transaction Signing Library.
+
+== Version 2610.1
+
+* Alternative distribution with all dependencies as separate jar files
+* Upgraded EU DSS lib to 6.5
+* Upgraded BC to 1.85
+
+== Version 2609.3
+
+== Version 2609.2
+
+* Avoid bundling Groovy runtime
+
+== Version 2501.1
+
+=== Changes
+
+* Upgraded EU DSS lib to 6.4
+
+== Version 2603.1
+
+=== Changes
+
+* Upgraded Grails to 7.0.9
+* PdfBox vulnerability CVE-2026-23907 suppressed.
+
+== Version 2602.4
+
+=== Changes
+
+* Validation for detached packaging made possible.
+* Fix for pdf signing.
+
+== Version 2602.3
+
+== Version 2602.2
+
+=== Changes
+
+* Upgraded Gradle to 9.3.1.
+* Upgraded Spock to 2.4.
+* Use the signing date from the remote-sign server, to calculate reference id:s
+based on the same data as the remote-sign server.
+
+== Version 2602.1
+
+=== Changes
+
+* Edited bundled validation policy, removing the iIDAS tag.
+* Added a few more eu.europa.ec.joinup.sd-dss runtime dependencies.
+* Unnecessary dependencies removed.
+
+== Version 2601.1
+
+=== Upgrade notes
+The project now targets Java 21.
+
+=== Enhancements
+
+* It is now possible to create separately configured TransactionSigner and TransactionValidator instances, see
+<<README.adoc#signer,here>>, and <<README.adoc#validator,here>>.
+
+=== Changes
+
+* Upgraded Gradle to 8.14.3.
+* Added runtime dependency eu.europa.ec.joinup.sd-dss:dss-cms-object to project.
+
+== Version 2512.1
+
+=== Enhancements
+
+* The eu.europa.ec.joinup.sd-dss library upgraded to version 6.3.
+* Default validation policy file that comes with this library updated to match the new eu.europa.ec.joinup.sd-dss version.
+* Removed temporary security-related dependency overrides, as they are no longer required.
+* Dependency upgrades:
+** `org.spockframework:spock-bom` to `2.4-groovy-3.0`
+
+== Version 2509.1
+
+=== Upgrade notes
+This release contains no breaking changes.
+
+=== Changes
+
+* Upgraded Gradle to `7.6.6`
+* Vulnerability CVE-2025-48924 fixed via:
+** commons-lang3: upgraded to 3.18.0
+
+== Version 2506.1
+
+=== Upgrade notes
+NOTE: This release includes changes in preparation for migrating to Java 21 in Q4 2025.
+
+=== Changes
+* Upgraded Gradle to `7.6.5`
+** Updated Gradle Wrapper files (`gradlew`, `gradlew.bat`, `gradle-wrapper.jar`) to align with the configured version.
+* Removed unrelated internal build logic from `build.gradle`.
+
+* Upgraded Spock Framework Core Module to `2.4-M6-groovy-3.0`.
+* Upgraded SLF4J to `2.0.17`.
+* Upgraded Apache HttpClient to `5.5`.
+* Upgraded JSON in Java to `20250517`.
+
+* Improvements to SignTool CLI:
+** Added support for explicitly setting the signature algorithm.
+
+* Security:
+** Fixed vulnerability `CVE-2025-27820` (transitive from `eu.europa.ec.joinup.sd-dss:dss-service`) by upgrading dependencies:
+*** `org.apache.httpcomponents.client5:httpclient5` → `5.5`
+*** `org.apache.httpcomponents.core5:httpcore5` → `5.3.4`
+*** `org.apache.httpcomponents.core5:httpcore5-h2` → `5.3.4`
+
+== Version 2503.1
+
+=== Upgrade notes
+This release contains *breaking changes*.
+
+=== Improvements and bug fixes
+* Upgraded eu.europa.ec.joinup.sd-dss to version 6.2
+* Bundled validation policy now accepts the RSASSA-PSS algorithm for signatures, and on signing certificate
+* Fixed thread-related issue causing "No pending transaction found with requestId: XXX" errors under high TPS.
+* Changed the default signature algorithm from `SHA256withRSA` to `SHA512withRSAandMGF1`.
+This can be overridden using:
+
+    TransactionSigner signer = new TransactionSigner.Builder()
+        .signatureAlgorithm("SHA256withRSA")
+
+* Added DSS PAdES PDFBox dependency to resolve missing IPdfObjFactory implementation.
+* Minor improvements to automatic stream closing, making it more concise.
+
+== Version 2502.3
+
+=== Improvements and bug fixes
+* No change.
+
+== Version 2502.1
+
+=== Improvements and bug fixes
+* Resolved build failure for tests caused by a missing spock-bom dependency.
+* Upgraded com.github.johnrengelman.shadow from 6.1.0 to 7.1.2.
+* Reformatted build.gradle to adopt the modern plugin application syntax.
+* Removed redundant java plugin. Already applied by Java Library Plugin.
+
+=== Upgrade notes
+This release contains no breaking changes.
+
+== Version 2501.1
+
+=== Improvements and bug fixes
+* Bump Gradle to 7.6.4 in wrapper.
+* Bump Grails from 6.2.0 to 6.2.3.
+* Bump Grails Gradle Plugin from 6.2.0 to 6.2.4.
+* Bump Groovy to 3.0.23.
+* Bump JSON In Java from 20240303 to 20250107.
+
+=== Upgrade notes
+This release contains no breaking changes.
+
+== Version 2408.3
+
+=== Upgrade notes
+This release contains breaking changes.
+
+=== Improvements and bug fixes
+* Fixed thread-related issue causing "No pending transaction found with requestId: XXX" errors under high TPS.
+
+== Version 2408.1
+
+=== Improvements and bug fixes
+* Bump SLF4J API Module to 2.0.16.
+* Bump SLF4J Simple Provider to 2.0.16.
+* Upgraded Gradle build tool to version 7.6.4.
+
+=== Upgrade notes
+This release contains no breaking changes.
+
+== Version 2405.1
+
+=== Improvements and bug fixes
+* Bump SLF4J API Module to 2.0.13.
+* Bump SLF4J Simple Provider to 2.0.13.
+* Bump JSON In Java to 20240303.
+* Added missing gradlew and gradlew.bat files.
+* Fixed bug that caused memory issues after heavy usage.
+* DSS library dependency has been upgraded to 5.13.
+* Updated some deprecated methods.
+
+=== Upgrade notes
+Smaller improvements to logging. Now logging statements are using parameterized messages for improved performance.
+Improvements to resource management by converting existing code to use try-with-resources for automatic closure.
