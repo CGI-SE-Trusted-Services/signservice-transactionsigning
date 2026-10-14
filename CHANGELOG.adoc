@@ -3,6 +3,12 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Transaction Signing Library.
 
+== Version 2610.1
+
+* Alternative distribution with all dependencies as separate jar files
+* Upgraded EU DSS lib to 6.5
+* Upgraded BC to 1.85
+
 == Version 2609.3
 
 == Version 2609.2
