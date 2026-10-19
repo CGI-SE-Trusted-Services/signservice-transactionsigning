@@ -58,11 +58,14 @@ test {
     useJUnitPlatform()
 }
 
+jar {
+    archiveClassifier = 'thin'
+}
+
 shadowJar {
     archiveBaseName = 'signservice-transactionsigning'
     mergeServiceFiles()
     archiveClassifier = ''
-    //exclude 'META-INF/versions/21/**'
     dependencies {
         exclude(dependency("org.slf4j:slf4j-simple:2.0.17"))
     }
@@ -74,6 +77,26 @@ shadowJar {
 }
 
 tasks.build.dependsOn tasks.shadowJar
+
+tasks.register('zipDist', Zip) {
+    def folderName = "${project.name}-${project.version}-dist"
+    archiveFileName = "${folderName}.zip"
+
+    from(projectDir) {
+        include('THIRD-PARTY-NOTICES')
+        include('LICENSE')
+        into(folderName)
+    }
+    from(tasks.jar) {
+        into("${folderName}/lib")
+    }
+    from(configurations.runtimeClasspath) {
+        into("${folderName}/lib")
+    }
+}
+
+tasks.build.dependsOn tasks.zipDist
+
 if(tasks.findByName("zipBin") && tasks.findByName("shadowJar")) {
     tasks.zipBin.dependsOn tasks.shadowJar
 }
