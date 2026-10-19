@@ -1,0 +1,22 @@
+########################################################
+# General Settings                                     #
+########################################################
+
+name: transactionsigning_readme_doc
+
+# Source directory of where adoc file(s) is placed
+sourceDir: .
+
+# adoc files to include
+sourceFilesPattern: README.adoc
+
+# Base name of generated document, if not set is same name as source adoc used.
+destFilename: README.pdf
+
+# Types of document types that should be generated a list of values (HTML5, PDF, DOCBOOK)
+docTypes:
+  - PDF
+
+# Classification of document set in header of generated documents, should be either internal, public, confidential
+# or highlyconfidential
+classification: internal
